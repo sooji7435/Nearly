@@ -64,6 +64,11 @@ struct Nearly: App {
                 .environmentObject(authViewModel)
                 .environmentObject(dbViewModel)
                 .environmentObject(appStateViewModel)
+                .onAppear {
+                    appStateViewModel.checkLogin()
+                }
         }
+        
     }
+    
 }

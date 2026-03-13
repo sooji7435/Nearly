@@ -14,12 +14,45 @@ enum AppState {
     case main
 }
 
+enum LoginPlatform: String {
+    case google
+    case kakao
+    case naver
+}
+
 class AppStateViewModel: ObservableObject {
     @Published var state: AppState = .login
+    
+    func checkLogin() {
+        
+        guard let _ = getLoginPlatform() else {
+            state = .login
+            return
+        }
+        state = .main
     }
     
-
-
+    func setLoginPlatform(_ platform: LoginPlatform) {
+        UserDefaults.standard.set(platform.rawValue, forKey: "loginPlatform")
+    }
     
+    func getLoginPlatform() -> LoginPlatform? {
+        
+        guard let value = UserDefaults.standard.string(forKey: "loginPlatform") else {
+            return nil
+        }
+        
+        return LoginPlatform(rawValue: value)
+    }
+    
+    func logout() {
+        UserDefaults.standard.removeObject(forKey: "loginPlatform")
+        state = .login
+    }
+}
+
+
+
+
 
 

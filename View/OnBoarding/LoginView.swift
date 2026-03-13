@@ -24,9 +24,10 @@ struct LoginView: View {
             }
             Spacer()
             
-            // MARK: - Naver login button
+            // MARK: - Google login button
             Button(action: { authViewModel.googleLogIn { userID in
                 userManager.user.id = userID
+                appStateViewModel.setLoginPlatform(.google)
                 userManager.fetchUserInfo(userID: userManager.user.id) { exists in
                     if exists {
                         appStateViewModel.state = .main
@@ -42,6 +43,7 @@ struct LoginView: View {
             // MARK: - Kakao login button
             Button ( action: { authViewModel.kakaoLogin { userID in
                 userManager.user.id = userID
+                appStateViewModel.setLoginPlatform(.kakao)
                 userManager.fetchUserInfo(userID: userManager.user.id) { exists in
                     if exists {
                         appStateViewModel.state = .main
@@ -58,6 +60,7 @@ struct LoginView: View {
             // MARK: - Naver login button
             Button (action: { authViewModel.naverLogin { userID in
                 userManager.user.id = userID
+                appStateViewModel.setLoginPlatform(.naver)
                 userManager.fetchUserInfo(userID: userManager.user.id) { exists in
                     if exists {
                         appStateViewModel.state = .main
