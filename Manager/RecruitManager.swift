@@ -14,7 +14,7 @@ class RecruitManager: ObservableObject {
     @Published var recruit: Recruit = Recruit(postId: "", authorId: "", title: "", contents: "", time: 0, route: [] )
     @Published var recruits: [Recruit] = []
     @Published var ref: DatabaseReference! = Database.database().reference()
-
+    
     func addRecruit(authorId: String, title: String, content: String, time: Date) {
         
         print("call addRecruit")
@@ -30,7 +30,7 @@ class RecruitManager: ObservableObject {
              "title": title,
              "content": content,
              "time": time.timeIntervalSince1970,
-             "route": ["coordinates": routeData],
+             "route": routeData,
              "participants": []
             ])
         
@@ -39,38 +39,48 @@ class RecruitManager: ObservableObject {
     
     func fetchRecruitsList() {
         print("fetch start")
+        
         ref.child("recruits").observeSingleEvent(of: .value) { snapshot in
+            
             var temp: [Recruit] = []
             
             for child in snapshot.children {
-                if let snap = child as? DataSnapshot,
-                   let value = snap.value as? [String: Any] {
-                    
-                    let postId = snap.key
-                    let authorId = value["authorId"] as? String ?? ""
-                    let title = value["title"] as? String ?? ""
-                    let content = value["content"] as? String ?? ""
-                    let time = value["time"] as? Double ?? 0
-                    let participants = value["participants"] as? [String] ?? [""]
-                    
-                    // route를 [[Double]]로 읽기
-                    var coordinates2D: [[Double]] = []
-                    if let routeArray = value["route"] as? [[String: Double]] {
-                        coordinates2D = routeArray.map { [$0["lat"] ?? 0, $0["lon"] ?? 0] }
+                
+                guard let snap = child as? DataSnapshot,
+                      let value = snap.value as? [String: Any] else { continue }
+                
+                let postId = snap.key
+                let authorId = value["authorId"] as? String ?? ""
+                let title = value["title"] as? String ?? ""
+                let content = value["content"] as? String ?? ""
+                let time = value["time"] as? Double ?? 0
+                let participants = value["participants"] as? [String] ?? []
+                
+                // route 파싱
+                var route: [CLLocationCoordinate2D] = []
+                
+                if let routeArray = value["route"] as? [[String: Any]] {
+                    route = routeArray.compactMap { dict in
+                        
+                        guard let lat = dict["lat"] as? Double,
+                              let lon = dict["lon"] as? Double else { return nil }
+                        
+                        return CLLocationCoordinate2D(latitude: lat, longitude: lon)
                     }
-                    
-                    let recruit = Recruit(
-                        postId: postId,
-                        authorId: authorId,
-                        title: title,
-                        contents: content,
-                        time: time,
-                        route: coordinates2D.map { CLLocationCoordinate2D(latitude: $0[0], longitude: $0[1]) },
-                        participants: participants
-                    )
-                    
-                    temp.append(recruit)
                 }
+                
+                // 🔹 Recruit 생성
+                let recruit = Recruit(
+                    postId: postId,
+                    authorId: authorId,
+                    title: title,
+                    contents: content,
+                    time: time,
+                    route: route,
+                    participants: participants
+                )
+                
+                temp.append(recruit)
             }
             
             DispatchQueue.main.async {

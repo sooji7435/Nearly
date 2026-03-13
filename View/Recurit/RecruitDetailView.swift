@@ -48,7 +48,6 @@ struct RecruitDetailView: View {
                 .background(Color(.systemGray6))
                 .clipShape(RoundedRectangle(cornerRadius: 16))
                 
-                
                 // 지도 카드
                 VStack(alignment: .leading, spacing: 12) {
                     
@@ -76,12 +75,9 @@ struct RecruitDetailView: View {
                     .clipShape(RoundedRectangle(cornerRadius: 16))
                 }
                 
-                
                 // 참여 버튼
                 Button {
                         recruitManager.toggleParticipation(recruit: recruit, userId: userId)
-                    
-                    
                 } label: {
                     Text("참여하기")
                         .font(.headline)
@@ -98,6 +94,17 @@ struct RecruitDetailView: View {
         .navigationBarTitleDisplayMode(.inline)
         .onAppear() {
             userId = userManager.user.id
+            
+            if let first = recruit.route.first {
+                    cameraPosition = .region(
+                        MKCoordinateRegion(
+                            center: first,
+                            span: MKCoordinateSpan(latitudeDelta: 0.01, longitudeDelta: 0.01)
+                        )
+                    )
+                }
+            print(recruitManager.recruit.route)
+
         }
     }
 }
