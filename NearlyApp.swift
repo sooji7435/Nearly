@@ -42,6 +42,7 @@ struct Nearly: App {
     @StateObject var authViewModel: AuthenticationViewModel = AuthenticationViewModel()
     @StateObject var dbViewModel: RealtimeDBViewModel = RealtimeDBViewModel()
     @StateObject var appStateViewModel: AppStateViewModel = AppStateViewModel()
+    @StateObject var runningViewModel: RunningViewModel = RunningViewModel()
     
     init() {
         KakaoSDK.initSDK(appKey: "8ccbb76509da0aaf5a266b99bb5a8521")
@@ -64,6 +65,7 @@ struct Nearly: App {
                 .environmentObject(authViewModel)
                 .environmentObject(dbViewModel)
                 .environmentObject(appStateViewModel)
+                .environmentObject(runningViewModel)
                 .onAppear {
                     appStateViewModel.checkLogin()
                 }

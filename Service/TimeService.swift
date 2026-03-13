@@ -14,3 +14,11 @@ extension DateFormatter {
         return formatter
     }()
 }
+
+// 시간 포맷 함수
+func timeString(_ time: TimeInterval) -> String {
+    let h = Int(time) / 3600
+    let m = Int(time) / 60 % 60
+    let s = Int(time) % 60
+    return String(format: "%02d:%02d:%02d", h, m, s)
+}
