@@ -51,7 +51,6 @@ struct MapView: View {
                         locationManager.requestLocationPermission()
                         locationManager.requestLocation()
                         userManager.user.userLocation = locationManager.userLocation
-                        print("userlocation: \(userManager.user.userLocation)")
                         isPresented = false
                     }) {
                         Text("내 위치 확인")

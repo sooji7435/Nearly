@@ -41,6 +41,28 @@ class RecruitManager: ObservableObject {
         print("add recruit success")
     }
     
+    func deleteRecruit(postId: String) {
+        
+        // Firebase 삭제
+        ref.child("recruits").child(postId).removeValue { error, _ in
+            
+            if let error = error {
+                print("삭제 실패:", error)
+                return
+            }
+            
+            print("모집 삭제 성공")
+            
+            // 로컬 recruits 배열에서도 제거
+            self.recruits.removeAll { $0.postId == postId }
+            
+            // 현재 선택된 recruit 초기화 (필요하면)
+            if self.recruit.postId == postId {
+                self.recruit = Recruit(postId: "", authorId: "", title: "", contents: "", time: 0, meetingLocation: CLLocationCoordinate2D(), route: [], participants: [])
+            }
+        }
+    }
+    
     func fetchRecruitsList() {
         print("fetch start")
         
@@ -103,11 +125,9 @@ extension RecruitManager {
     func toggleParticipation(recruit: Recruit, userId: String) {
         var updatedParticipants = recruit.participants
         
-        if updatedParticipants.contains(userId) {
-            // 참여 취소
-            updatedParticipants.removeAll { $0 == userId }
+        if let index = updatedParticipants.firstIndex(of: userId) {
+            updatedParticipants.remove(at: index)
         } else {
-            // 참여 신청
             updatedParticipants.append(userId)
         }
         
@@ -116,8 +136,8 @@ extension RecruitManager {
         
         // 로컬 배열 업데이트
         if let index = self.recruits.firstIndex(where: { $0.postId == recruit.postId }) {
-            self.recruits[index].participants = updatedParticipants
-        }
+                    self.recruits[index].participants = updatedParticipants
+                }
         
         // 선택된 recruit가 현재 view에 바인딩되어 있다면 업데이트
         if self.recruit.postId == recruit.postId {

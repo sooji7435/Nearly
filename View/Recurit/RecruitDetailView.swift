@@ -12,8 +12,10 @@ struct RecruitDetailView: View {
     @EnvironmentObject var recruitManager: RecruitManager
     @EnvironmentObject var userManager: UserManager
     
+    @Environment(\.dismiss) var dismiss
+    
     @State private var cameraPosition: MapCameraPosition = .automatic
-    @State private var userId: String = ""
+    @State private var showDeleteAlert = false
     
     let recruit: Recruit
     
@@ -55,7 +57,7 @@ struct RecruitDetailView: View {
                         .font(.headline)
                     
                     Map(position: $cameraPosition) {
-                        Annotation("meeting point", coordinate: recruitManager.recruit.meetingLocation) {
+                        Annotation("meeting point", coordinate: recruit.meetingLocation) {
                             Text("📍")
                         }
                         
@@ -79,25 +81,67 @@ struct RecruitDetailView: View {
                 }
                 
                 // 참여 버튼
-                Button {
-                        recruitManager.toggleParticipation(recruit: recruit, userId: userId)
-                } label: {
-                    Text("참여하기")
+                if recruit.authorId == userManager.user.id {
+                    
+                    // 작성자 → 삭제 버튼
+                    Button {
+                        showDeleteAlert = true
+                    } label: {
+                        Text("모집 삭제")
+                            .font(.headline)
+                            .frame(maxWidth: .infinity)
+                            .padding()
+                            .background(Color.red)
+                            .foregroundStyle(.white)
+                            .clipShape(RoundedRectangle(cornerRadius: 14))
+                    }
+
+                } else {
+                    
+                    // 일반 유저 → 참여 버튼
+                    Button {
+                        recruitManager.toggleParticipation(
+                            recruit: recruit,
+                            userId: userManager.user.id
+                        )
+                    } label: {
+                        Text(
+                            recruit.participants.contains(userManager.user.id)
+                            ? "참여 취소"
+                            : "참여하기"
+                        )
                         .font(.headline)
                         .frame(maxWidth: .infinity)
                         .padding()
-                        .background(recruit.participants.contains(userId) ? Color.red : Color.blue)
+                        .background(
+                            recruit.participants.contains(userManager.user.id)
+                            ? Color.red
+                            : Color.blue
+                        )
                         .foregroundStyle(.white)
                         .clipShape(RoundedRectangle(cornerRadius: 14))
+                    }
                 }
                 
             }
             .padding()
+            .alert("모집 삭제", isPresented: $showDeleteAlert) {
+
+                Button("삭제", role: .destructive) {
+                    recruitManager.deleteRecruit(postId: recruit.postId)
+                    dismiss()
+                }
+
+                Button("취소", role: .cancel) {}
+
+            } message: {
+                Text("이 모집글을 삭제하시겠습니까?")
+            }
+            
         }
+        
         .navigationBarTitleDisplayMode(.inline)
         .onAppear() {
-            userId = userManager.user.id
-            
             if let first = recruit.route.first {
                     cameraPosition = .region(
                         MKCoordinateRegion(
