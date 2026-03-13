@@ -14,6 +14,7 @@ struct Recruit: Identifiable {
     var title: String
     var contents: String
     var time: Double
+    var meetingLocation: CLLocationCoordinate2D
     var route: [CLLocationCoordinate2D]
     var participants: [String] = []
     

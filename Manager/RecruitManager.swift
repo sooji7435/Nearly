@@ -11,7 +11,7 @@ import FirebaseDatabase
 import CoreLocation
 
 class RecruitManager: ObservableObject {
-    @Published var recruit: Recruit = Recruit(postId: "", authorId: "", title: "", contents: "", time: 0, route: [] )
+    @Published var recruit: Recruit = Recruit(postId: "", authorId: "", title: "", contents: "", time: 0, meetingLocation: CLLocationCoordinate2D(latitude: 0, longitude: 0), route: [] )
     @Published var recruits: [Recruit] = []
     @Published var ref: DatabaseReference! = Database.database().reference()
     
@@ -30,6 +30,10 @@ class RecruitManager: ObservableObject {
              "title": title,
              "content": content,
              "time": time.timeIntervalSince1970,
+             "meetingLocation": [
+                "lat": self.recruit.meetingLocation.latitude,
+                "lon": self.recruit.meetingLocation.longitude
+            ],
              "route": routeData,
              "participants": []
             ])
@@ -54,6 +58,7 @@ class RecruitManager: ObservableObject {
                 let title = value["title"] as? String ?? ""
                 let content = value["content"] as? String ?? ""
                 let time = value["time"] as? Double ?? 0
+                let meetingLocation = value["meetingLocation"] as? CLLocationCoordinate2D ?? CLLocationCoordinate2D(latitude: 0, longitude: 0)
                 let participants = value["participants"] as? [String] ?? []
                 
                 // route 파싱
@@ -76,6 +81,7 @@ class RecruitManager: ObservableObject {
                     title: title,
                     contents: content,
                     time: time,
+                    meetingLocation: meetingLocation,
                     route: route,
                     participants: participants
                 )

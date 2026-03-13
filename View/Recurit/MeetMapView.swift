@@ -9,6 +9,8 @@ import SwiftUI
 import MapKit
 
 struct MeetMapView: View {
+    @EnvironmentObject var recuitManager: RecruitManager
+    
     @Environment(\.dismiss) var dismiss
     
     @State var cameraPosition: MapCameraPosition = .userLocation(
@@ -31,6 +33,7 @@ struct MeetMapView: View {
             .onTapGesture(perform: { screenCoord in
                        if let pinLocation = reader.convert(screenCoord, from: .local) {
                            meetingPoint = pinLocation
+                           recuitManager.recruit.meetingLocation = pinLocation
                            print(pinLocation)
                        }
                    })

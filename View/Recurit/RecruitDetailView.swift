@@ -55,6 +55,9 @@ struct RecruitDetailView: View {
                         .font(.headline)
                     
                     Map(position: $cameraPosition) {
+                        Annotation("meeting point", coordinate: recruitManager.recruit.meetingLocation) {
+                            Text("📍")
+                        }
                         
                         MapPolyline(
                             coordinates: recruit.route
@@ -111,7 +114,7 @@ struct RecruitDetailView: View {
 
 
 #Preview {
-    RecruitDetailView(recruit: Recruit(postId: "123", authorId: "123", title: "한강에서 런닝하실 분~", contents: "안녕하세요 한강에서 런닝하실 분 구합니다.", time: 1710154582, route: [
+    RecruitDetailView(recruit: Recruit(postId: "123", authorId: "123", title: "한강에서 런닝하실 분~", contents: "안녕하세요 한강에서 런닝하실 분 구합니다.", time: 1710154582, meetingLocation: CLLocationCoordinate2D(latitude: 37.5665, longitude: 126.9780), route: [
         CLLocationCoordinate2D(latitude: 37.5665, longitude: 126.9780),
         CLLocationCoordinate2D(latitude: 37.5672, longitude: 126.9795),
         CLLocationCoordinate2D(latitude: 37.5680, longitude: 126.9810),

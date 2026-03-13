@@ -6,6 +6,7 @@
 //
 
 import SwiftUI
+import CoreLocation
 
 struct RecruitListView: View {
     let recruit: Recruit
@@ -48,6 +49,6 @@ struct RecruitListView: View {
 
 
 #Preview {
-    RecruitListView(recruit: Recruit(postId: "123", authorId: "123", title: "Test", contents: "This is test content", time: 0, route: [], participants: [""]))
+    RecruitListView(recruit: Recruit(postId: "123", authorId: "123", title: "Test", contents: "This is test content", time: 0, meetingLocation: CLLocationCoordinate2D(latitude: 37.5665, longitude: 126.9780), route: [], participants: [""]))
 }
 
