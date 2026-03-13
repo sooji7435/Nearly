@@ -8,7 +8,7 @@
 import Foundation
 
 struct UserLocation: Codable {
-    let lat: Double
-    let lng: Double
-    let address: String
+    var lat: Double
+    var lng: Double
+    var address: String
 }

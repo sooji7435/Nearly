@@ -50,7 +50,5 @@ class LocationManager:  NSObject, ObservableObject, CLLocationManagerDelegate {
             lng: location.coordinate.longitude,
             address: address
         )
-        
     }
-    
 }

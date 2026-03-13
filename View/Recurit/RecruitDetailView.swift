@@ -97,8 +97,7 @@ struct RecruitDetailView: View {
         }
         .navigationBarTitleDisplayMode(.inline)
         .onAppear() {
-            guard let user = userManager.user else { return }
-            userId = user.id
+            userId = userManager.user.id
         }
     }
 }

@@ -99,15 +99,14 @@ struct AddRecruitView: View {
             .toolbar {
                 ToolbarItem(placement: .topBarTrailing) {
                     Button(action: {
-                        if let user = userManager.user {
-                            print(user)
+
                             recruitManager.addRecruit(
-                                authorId: user.id,
+                                authorId: userManager.user.id,
                                 title: title,
                                 content: contents,
                                 time: time,
                             )
-                        }
+                        
                         dismiss()
                     }) {
                         Text("확인")

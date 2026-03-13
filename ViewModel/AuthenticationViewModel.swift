@@ -17,19 +17,18 @@ enum SignState {
 }
 
 class AuthenticationViewModel: ObservableObject {
-    @Published var userManager: UserManager = UserManager()
     @Published var signState: SignState = .signOut
     @Published var currentUser: User?
     
     // MARK: - Kakao Login
-    func kakaoLogin() {
+    func kakaoLogin(completion: @escaping (String) -> Void) {
         if UserApi.isKakaoTalkLoginAvailable() {
             UserApi.shared.loginWithKakaoTalk { _, error in
                 if let error = error {
                     print("KakaoTalk Login Error:", error.localizedDescription)
                     return
                 }
-                self.loadKakaoUserInfo()
+                self.loadKakaoUserInfo(completion: completion)
             }
         } else {
             UserApi.shared.loginWithKakaoAccount { _, error in
@@ -37,12 +36,12 @@ class AuthenticationViewModel: ObservableObject {
                     print("Kakao Account Login Error:", error.localizedDescription)
                     return
                 }
-                self.loadKakaoUserInfo()
+                self.loadKakaoUserInfo(completion: completion)
             }
         }
     }
     
-    private func loadKakaoUserInfo() {
+    private func loadKakaoUserInfo(completion: @escaping (String) -> Void) {
         UserApi.shared.me { userId, error in
             if let error = error {
                 print("Kakao User Info Error:", error.localizedDescription)
@@ -52,18 +51,15 @@ class AuthenticationViewModel: ObservableObject {
             guard let id = userId else { return }
                
             DispatchQueue.main.async {
-                self.userManager.user?.id = "kakao_\(id)"
-                self.userManager.fetchUserInfo(platformID: "kakao_\(id)")
                 self.signState = .signIn
+                completion("kakao_\(id)")
             }
-            
         }
     }
 
     // MARK: - Google Login
-    func googleLogIn() {
-        let clientID = "256669622710-kj730j8ovfqri1urcll636mvg5gojj2n.apps.googleusercontent.com"
-
+    func googleLogIn(completion: @escaping (String) -> Void) {
+        print("Google login Called")
         // rootViewController 가져오기
         guard let windowScene = UIApplication.shared.connectedScenes.first as? UIWindowScene,
               let rootVC = windowScene.windows.first?.rootViewController else { return }
@@ -77,8 +73,9 @@ class AuthenticationViewModel: ObservableObject {
             guard let userID = result?.user.userID else { return }
             
             DispatchQueue.main.async {
-                self.userManager.user?.id = "google_\(userID)"
+                print("login success")
                 self.signState = .signIn
+                completion("google_\(userID)")
             }
         }
     }
@@ -88,15 +85,13 @@ class AuthenticationViewModel: ObservableObject {
     }
     
     // MARK: - Naver Login
-
-    
-    func naverLogin() {
+    func naverLogin(completion: @escaping (String) -> Void) {
         NidOAuth.shared.requestLogin{ result in
             switch result {
                 
             case .success(let loginResult):
                 print("Access Token: ", loginResult.accessToken.tokenString)
-                self.fetchUserId(accessToken: loginResult.accessToken.tokenString)
+                self.fetchUserId(accessToken: loginResult.accessToken.tokenString, completion: completion)
                 
                 
             case .failure(let error):
@@ -105,7 +100,7 @@ class AuthenticationViewModel: ObservableObject {
         }
     }
     
-    private func fetchUserId(accessToken: String) {
+    private func fetchUserId(accessToken: String, completion: @escaping (String) -> Void) {
         let url = URL(string: "https://openapi.naver.com/v1/nid/me")!
         var request = URLRequest(url: url)
         request.setValue("Bearer \(accessToken)", forHTTPHeaderField: "Authorization")
@@ -119,10 +114,8 @@ class AuthenticationViewModel: ObservableObject {
             }
             
             DispatchQueue.main.async {
-                self.userManager.user?.id = "naver_\(id)"
-                self.userManager.fetchUserInfo(platformID: "naver_\(id)")
                 self.signState = .signIn
-                print("네이버 사용자 ID:", id)
+                completion("naver_\(id)")
             }
         }.resume()
     }

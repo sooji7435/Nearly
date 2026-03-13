@@ -9,7 +9,7 @@ import SwiftUI
 
 struct ProfileView: View {
     @EnvironmentObject var userManager: UserManager
-    @EnvironmentObject var app: AppStateViewModel
+    @EnvironmentObject var appStateViewModel: AppStateViewModel
     @EnvironmentObject var dbViewModel: RealtimeDBViewModel
     @EnvironmentObject var locationManager: LocationManager
     
@@ -51,9 +51,8 @@ struct ProfileView: View {
         .navigationTitle("프로필 설정")
         .toolbar {
             Button(action: {
-                userManager.addUser()                
-                app.state = .main
-                app.isOnboardingComplete = true
+                userManager.addUser(userName: userName)
+                appStateViewModel.state = .main
             }) {
                 Text("완료")
             }

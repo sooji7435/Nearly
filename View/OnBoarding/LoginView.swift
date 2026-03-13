@@ -9,8 +9,8 @@ import SwiftUI
 
 struct LoginView: View {
     @EnvironmentObject var authViewModel: AuthenticationViewModel
-    @EnvironmentObject var appState: AppStateViewModel
     @EnvironmentObject var userManager: UserManager
+    @EnvironmentObject var appStateViewModel: AppStateViewModel
     
     var body: some View {
         VStack {
@@ -25,19 +25,47 @@ struct LoginView: View {
             Spacer()
             
             // MARK: - Naver login button
-            Button(action: {authViewModel.googleLogIn()}) {
+            Button(action: { authViewModel.googleLogIn { userID in
+                userManager.user.id = userID
+                userManager.fetchUserInfo(userID: userManager.user.id) { exists in
+                    if exists {
+                        appStateViewModel.state = .main
+                    } else {
+                        appStateViewModel.state = .createProfile
+                    }
+                    
+                }
+            } }) {
                 Image("google_login")
             }
             
             // MARK: - Kakao login button
-            Button ( action: { authViewModel.kakaoLogin() }) {
+            Button ( action: { authViewModel.kakaoLogin { userID in
+                userManager.user.id = userID
+                userManager.fetchUserInfo(userID: userManager.user.id) { exists in
+                    if exists {
+                        appStateViewModel.state = .main
+                    } else {
+                        appStateViewModel.state = .createProfile
+                    }
+                }
+            } }) {
                 Image("kakao_login")
                     .resizable()
                     .frame(width: 320, height: 50)
             }
             
             // MARK: - Naver login button
-            Button (action: {authViewModel.naverLogin()}) {
+            Button (action: { authViewModel.naverLogin { userID in
+                userManager.user.id = userID
+                userManager.fetchUserInfo(userID: userManager.user.id) { exists in
+                    if exists {
+                        appStateViewModel.state = .main
+                    } else {
+                        appStateViewModel.state = .createProfile
+                    }
+                }
+            } }) {
                 Image("naver_login")
                     .resizable()
                     .frame(width: 320, height: 50)
@@ -46,15 +74,10 @@ struct LoginView: View {
             Spacer()
                 .frame(height: 60)
         }
-        .onChange(of: authViewModel.signState) {
-            appState.state = .createProfile
-        }
     }
 }
 
 #Preview {
     LoginView()
         .environmentObject(AuthenticationViewModel())
-        .environmentObject(AppStateViewModel())
-        .environmentObject(UserManager())
 }

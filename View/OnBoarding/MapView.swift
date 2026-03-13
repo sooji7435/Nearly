@@ -11,6 +11,7 @@ import MapKit
 struct MapView: View {
     @EnvironmentObject var locationManager: LocationManager
     @EnvironmentObject var app: AppStateViewModel
+    @EnvironmentObject var userManager: UserManager
     
     @Environment(\.dismiss) var dismiss
     
@@ -18,11 +19,6 @@ struct MapView: View {
         followsHeading: false, fallback: .automatic)
     
     @Binding var isPresented: Bool
-    
-    
-    var isLocationReady: Bool {
-        locationManager.userLocation != nil
-    }
     
     var body: some View {
         ZStack {
@@ -54,6 +50,8 @@ struct MapView: View {
                     Button(action: {
                         locationManager.requestLocationPermission()
                         locationManager.requestLocation()
+                        userManager.user.userLocation = locationManager.userLocation
+                        print("userlocation: \(userManager.user.userLocation)")
                         isPresented = false
                     }) {
                         Text("내 위치 확인")

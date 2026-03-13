@@ -8,37 +8,27 @@ import SwiftUI
 import FirebaseAuth
 
 struct RootView: View {
-    @EnvironmentObject var auth: AuthenticationViewModel
-    @EnvironmentObject var userManager: UserManager
-    @EnvironmentObject var appState: AppStateViewModel
+    @EnvironmentObject var appStateViewModel: AppStateViewModel
+    
     
     var body: some View {
         NavigationStack {
-            if auth.signState == .signOut {
-                LoginView()
-            }
-            else if auth.signState == .signIn && appState.isOnboardingComplete{
-                MainView()
-                
-            }
-            else {
-                switch appState.state {
+                switch appStateViewModel.state {
 
+                case .login:
+                    LoginView()
+                    
                 case .createProfile:
                     ProfileView()
+                    
                 case .main:
                     MainView()
                 }
             }
         }
-        .onAppear {
-            userManager.fetchUserInfo(platformID: )
-        }
-
     }
-}
-
 
 #Preview {
     RootView()
+        .environmentObject(UserManager())
 }

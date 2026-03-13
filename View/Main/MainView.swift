@@ -32,7 +32,7 @@ struct MainView: View {
                 }
                 .padding(.horizontal)
                 .padding(.top, 10)
-                                
+                
                 // List
                 ScrollView {
                     LazyVStack {
@@ -67,9 +67,6 @@ struct MainView: View {
                     .padding()
                 }
             }
-        }
-        .onAppear {
-            locationManager.requestLocation()
         }
     }
 }
