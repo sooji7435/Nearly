@@ -20,7 +20,7 @@ struct RunningView: View {
     var body: some View {
         VStack {
             // 지도
-            Map(position: $position) {
+            Map(position: $position, interactionModes: [.zoom]) {
                 MapPolyline(coordinates: pathCoordinates)
                     .stroke(Color.CardColor, lineWidth: 10)
             }
