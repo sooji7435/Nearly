@@ -35,12 +35,8 @@ struct Nearly: App {
     @StateObject var userManager: UserManager = UserManager()
     @StateObject var recruitManager: RecruitManager = RecruitManager()
     
-    //Service
-    @StateObject var geo: GeocodingService = GeocodingService()
-    
     //ViewModel
     @StateObject var authViewModel: AuthenticationViewModel = AuthenticationViewModel()
-    @StateObject var dbViewModel: RealtimeDBViewModel = RealtimeDBViewModel()
     @StateObject var appStateViewModel: AppStateViewModel = AppStateViewModel()
     @StateObject var runningViewModel: RunningViewModel = RunningViewModel()
     
@@ -58,12 +54,8 @@ struct Nearly: App {
                 .environmentObject(userManager)
                 .environmentObject(recruitManager)
             
-            //Service
-                .environmentObject(geo)
-            
             //ViewModel
                 .environmentObject(authViewModel)
-                .environmentObject(dbViewModel)
                 .environmentObject(appStateViewModel)
                 .environmentObject(runningViewModel)
                 .onAppear {
