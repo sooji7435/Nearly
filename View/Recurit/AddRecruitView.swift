@@ -111,7 +111,7 @@ struct AddRecruitView: View {
                     }) {
                         Text("확인")
                     }
-                    .disabled(title.isEmpty || contents.isEmpty)
+                    .disabled(title.isEmpty || contents.isEmpty || meetingPoint == nil)
                 }
             }
         }

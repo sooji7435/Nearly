@@ -50,8 +50,6 @@ struct MapView: View {
                     Button(action: {
                         locationManager.requestLocationPermission()
                         locationManager.requestLocation()
-                        userManager.user.userLocation = locationManager.userLocation
-                        isPresented = false
                     }) {
                         Text("내 위치 확인")
                             .font(.headline)
@@ -64,6 +62,11 @@ struct MapView: View {
                     }
                 }
             }
+        }
+        .onChange(of: locationManager.userLocation) { _, newLocation in
+            guard let newLocation else { return }
+            userManager.user.userLocation = newLocation
+            isPresented = false
         }
         // MARK: - Confirm Location Button
         .toolbar {

@@ -9,7 +9,7 @@ import SwiftUI
 import MapKit
 
 struct MeetMapView: View {
-    @EnvironmentObject var recuitManager: RecruitManager
+    @EnvironmentObject var recruitManager: RecruitManager
     
     @Environment(\.dismiss) var dismiss
     
@@ -33,7 +33,7 @@ struct MeetMapView: View {
             .onTapGesture(perform: { screenCoord in
                        if let pinLocation = reader.convert(screenCoord, from: .local) {
                            meetingPoint = pinLocation
-                           recuitManager.recruit.meetingLocation = pinLocation
+                           recruitManager.recruit.meetingLocation = pinLocation
                            print(pinLocation)
                        }
                    })

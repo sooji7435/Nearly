@@ -29,9 +29,7 @@ struct RecruitListView: View {
                     
                     Spacer()
                     
-                    //MARK: - 참여자 수 표시
-                        Spacer()
-                        
+                    //MARK: - 참여자 수 표시                        
                         HStack(spacing: 4) {
                             Image(systemName: "person.fill")
                                 .foregroundColor(.gray)

@@ -13,7 +13,7 @@ import CoreLocation
 class RecruitManager: ObservableObject {
     @Published var recruit: Recruit = Recruit(postId: "", authorId: "", title: "", contents: "", time: 0, meetingLocation: CLLocationCoordinate2D(latitude: 0, longitude: 0), route: [] )
     @Published var recruits: [Recruit] = []
-    @Published var ref: DatabaseReference! = Database.database().reference()
+    let ref: DatabaseReference! = Database.database().reference()
     
     func addRecruit(authorId: String, title: String, content: String, time: Date) {
         

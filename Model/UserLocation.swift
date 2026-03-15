@@ -7,7 +7,7 @@
 
 import Foundation
 
-struct UserLocation: Codable {
+struct UserLocation: Codable, Equatable{
     var lat: Double
     var lng: Double
     var address: String

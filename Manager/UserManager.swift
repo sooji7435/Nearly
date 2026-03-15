@@ -11,7 +11,7 @@ import FirebaseDatabase
 
 class UserManager: ObservableObject {
     @Published var user: User = User(id: "")
-    @Published var ref: DatabaseReference! = Database.database().reference()
+    let ref: DatabaseReference! = Database.database().reference()
     
     func addUser(userName username: String) {
         print("add user called")

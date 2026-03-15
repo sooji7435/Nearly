@@ -9,7 +9,7 @@ import MapKit
 import Combine
 import CoreLocation
 
-class GeocodingService: ObservableObject{
+class GeocodingService {
     
     func reverseGeocode(location: CLLocation) async -> String {
             guard let request = MKReverseGeocodingRequest(location: location),

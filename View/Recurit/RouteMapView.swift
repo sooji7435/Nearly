@@ -39,6 +39,7 @@ struct RouteMapView: View {
                 .gesture(
                     DragGesture(minimumDistance: 0)
                         .onChanged { value in
+                            guard isDrawingMode else { return }
                             // DragGesture.Value → CGPoint
                             let screenPoint = value.location
                             

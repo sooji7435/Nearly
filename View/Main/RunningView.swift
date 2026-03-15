@@ -25,7 +25,7 @@ struct RunningView: View {
                     .stroke(Color.CardColor, lineWidth: 10)
             }
             .frame(height: 500)
-            .cornerRadius(12)
+            .clipShape(RoundedRectangle(cornerRadius: 12))
             .padding()
             
             // 러닝 정보
@@ -75,7 +75,7 @@ struct RunningView: View {
         }
         .navigationTitle("Running")
         .onChange(of: locationManager.userCoordinate) {_, newLocation in
-            guard let location = newLocation else { return } // 옵셔널 바인딩
+            guard let location = newLocation else { return }
             let coord = location.coordinate
             
             pathCoordinates.append(coord)

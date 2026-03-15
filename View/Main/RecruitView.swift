@@ -9,7 +9,7 @@ import SwiftUI
 struct RecruitView: View {
     @EnvironmentObject var userManager: UserManager
     @EnvironmentObject var locationManager: LocationManager
-    @EnvironmentObject var recruitMananger: RecruitManager
+    @EnvironmentObject var recruitManager: RecruitManager
     
     var body: some View {
         ZStack {
@@ -36,13 +36,13 @@ struct RecruitView: View {
                 // List
                 ScrollView {
                     LazyVStack {
-                        ForEach(recruitMananger.recruits) { recruit in
+                        ForEach(recruitManager.recruits) { recruit in
                             RecruitListView(recruit: recruit)
                         }
                     }
                 }
                 .onAppear {
-                    recruitMananger.fetchRecruitsList()
+                    recruitManager.fetchRecruitsList()
                 }
             }
             
