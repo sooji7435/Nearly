@@ -10,7 +10,6 @@ import SwiftUI
 struct ProfileView: View {
     @EnvironmentObject var userManager: UserManager
     @EnvironmentObject var appStateViewModel: AppStateViewModel
-    @EnvironmentObject var dbViewModel: RealtimeDBViewModel
     @EnvironmentObject var locationManager: LocationManager
     
     @State private var userName: String = ""
@@ -65,6 +64,5 @@ struct ProfileView: View {
     ProfileView()
         .environmentObject(UserManager())
         .environmentObject(AppStateViewModel())
-        .environmentObject(RealtimeDBViewModel())
         .environmentObject(LocationManager())
 }
