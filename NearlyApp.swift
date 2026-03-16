@@ -98,9 +98,16 @@ struct Nearly: App {
                 .environmentObject(runningViewModel)
                 .onAppear {
                     appStateViewModel.checkLogin()
+                    
+                    if let userId = UserDefaults.standard.string(forKey: "userId") {
+                            userManager.user.id = userId
+                            userManager.fetchUserInfo(userID: userId) { _ in }
+                        }
                 }
         }
         
+        
     }
+    
     
 }

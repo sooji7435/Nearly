@@ -123,21 +123,23 @@ class RecruitManager: ObservableObject {
 extension RecruitManager {
     
     func toggleParticipation(recruit: Recruit, userId: String) {
+        print("userId: \(userId)")
         var updatedParticipants = recruit.participants
         
         if let index = updatedParticipants.firstIndex(of: userId) {
+            // 참여 취소
             updatedParticipants.remove(at: index)
+            self.ref.child("recruits").child(recruit.postId).child("participants").child(userId).removeValue()
         } else {
+            // 참여
             updatedParticipants.append(userId)
+            self.ref.child("recruits").child(recruit.postId).child("participants").child(userId).setValue(true)
         }
-        
-        // DB 업데이트
-        self.ref.child("recruits").child(recruit.postId).child("participants").setValue(updatedParticipants)
         
         // 로컬 배열 업데이트
         if let index = self.recruits.firstIndex(where: { $0.postId == recruit.postId }) {
-                    self.recruits[index].participants = updatedParticipants
-                }
+            self.recruits[index].participants = updatedParticipants
+        }
         
         // 선택된 recruit가 현재 view에 바인딩되어 있다면 업데이트
         if self.recruit.postId == recruit.postId {

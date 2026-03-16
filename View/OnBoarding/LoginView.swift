@@ -26,6 +26,7 @@ struct LoginView: View {
             
             // MARK: - Google login button
             Button(action: { authViewModel.googleLogIn { userID in
+                UserDefaults.standard.set(userID, forKey: "userId")
                 userManager.saveToken()
                 userManager.user.id = userID
                 appStateViewModel.setLoginPlatform(.google)
@@ -56,6 +57,7 @@ struct LoginView: View {
             
             // MARK: - Kakao login button
             Button ( action: { authViewModel.kakaoLogin { userID in
+                UserDefaults.standard.set(userID, forKey: "userId")
                 userManager.saveToken()
                 userManager.user.id = userID
                 appStateViewModel.setLoginPlatform(.kakao)
@@ -74,6 +76,7 @@ struct LoginView: View {
             
             // MARK: - Naver login button
             Button (action: { authViewModel.naverLogin { userID in
+                UserDefaults.standard.set(userID, forKey: "userId")
                 userManager.saveToken()
                 userManager.user.id = userID
                 appStateViewModel.setLoginPlatform(.naver)

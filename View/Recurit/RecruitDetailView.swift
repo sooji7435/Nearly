@@ -17,7 +17,7 @@ struct RecruitDetailView: View {
     @State private var cameraPosition: MapCameraPosition = .automatic
     @State private var showDeleteAlert = false
     
-    let recruit: Recruit
+    var recruit: Recruit
     
     var body: some View {
         ScrollView {
@@ -104,6 +104,7 @@ struct RecruitDetailView: View {
                             recruit: recruit,
                             userId: userManager.user.id
                         )
+                        recruitManager.fetchRecruitsList()
                     } label: {
                         Text(
                             recruit.participants.contains(userManager.user.id)

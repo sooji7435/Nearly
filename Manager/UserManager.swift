@@ -31,6 +31,7 @@ class UserManager: ObservableObject {
     }
     
     func fetchUserInfo(userID: String, completion: @escaping (Bool) -> Void) {
+        print("user fetch start")
         ref.child("users").child(userID).observeSingleEvent(of: .value) { snapshot in
             if snapshot.exists() {
                 // 유저 존재하면 정보 업데이트
@@ -50,7 +51,8 @@ class UserManager: ObservableObject {
                     self.user = User(id: userID, userName: username, userLocation: location, fcmToken: token)
                 }
                 completion(true)  // 유저 존재
-                print("fetch success")
+                print("user fetch success")
+                print(self.user.id)
             } else {
                 completion(false) // 유저 없음
             }

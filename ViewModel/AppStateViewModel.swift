@@ -24,7 +24,6 @@ class AppStateViewModel: ObservableObject {
     @Published var state: AppState = .login
     
     func checkLogin() {
-        
         guard let _ = getLoginPlatform() else {
             state = .login
             return
@@ -50,9 +49,3 @@ class AppStateViewModel: ObservableObject {
         state = .login
     }
 }
-
-
-
-
-
-
