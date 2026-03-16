@@ -40,6 +40,7 @@ struct RunningView: View {
             // 버튼
             HStack(spacing: 20) {
                 Button(runningViewModel.isRunning ? "일시정지" : "시작") {
+                    locationManager.requestLocationPermission()
                     runningViewModel.isRunning ? runningViewModel.pauseRunning() : runningViewModel.startRunning()
                     locationManager.startUpdatingLocation()
                 }
@@ -80,6 +81,8 @@ struct RunningView: View {
             
             pathCoordinates.append(coord)
             print(pathCoordinates)
+            
+            runningViewModel.updateLocation(coord) 
         }
     }
 }

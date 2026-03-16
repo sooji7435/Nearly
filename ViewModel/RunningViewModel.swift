@@ -34,8 +34,6 @@ class RunningViewModel: ObservableObject {
         
         timer = Timer.scheduledTimer(withTimeInterval: 1, repeats: true) { _ in
             self.timeElapsed += 1
-            
-
         }
     }
     
@@ -51,6 +49,19 @@ class RunningViewModel: ObservableObject {
         distance = 0
         timeElapsed = 0
         pathCoordinates.removeAll()
+    }
+    
+    func updateLocation(_ newCoordinate: CLLocationCoordinate2D) {
+        guard isRunning else { return }
+        
+        if let previous = previousLocation {
+            let previousCL = CLLocation(latitude: previous.latitude, longitude: previous.longitude)
+            let newCL = CLLocation(latitude: newCoordinate.latitude, longitude: newCoordinate.longitude)
+            let delta = newCL.distance(from: previousCL) / 1000  // km 변환
+            distance += delta
+        }
+        
+        previousLocation = newCoordinate
     }
 }
 
