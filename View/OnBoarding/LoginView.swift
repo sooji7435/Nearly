@@ -16,7 +16,7 @@ struct LoginView: View {
         VStack {
             Spacer()
             
-        // MARK: - App Logo
+            // MARK: - App Logo
             VStack {
                 Image("AppLogo")
                     .font(.system(size: 60))
@@ -37,7 +37,21 @@ struct LoginView: View {
                     
                 }
             } }) {
-                Image("google_login")
+                HStack(spacing: -40) {
+                    Image("google_login")
+                        .resizable()
+                        .frame(width: 20, height: 20)
+                        .padding()
+                    
+                    Text("Sign in with Google")
+                        .frame(width: 307, height: 50)
+                        .foregroundStyle(Color.black)
+                        .font(.system(size: 15))
+                }
+                .overlay(
+                    RoundedRectangle(cornerRadius: 4)
+                        .stroke(Color.gray, lineWidth: 0.5)
+                )
             }
             
             // MARK: - Kakao login button
@@ -73,7 +87,7 @@ struct LoginView: View {
                     .resizable()
                     .frame(width: 320, height: 50)
             }
-                        
+            
             Spacer()
                 .frame(height: 60)
         }
