@@ -12,4 +12,5 @@ struct User: Identifiable {
     var id: String
     var userName: String?
     var userLocation: UserLocation?
+    var fcmToken: String?
 }

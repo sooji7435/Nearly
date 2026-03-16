@@ -26,6 +26,7 @@ struct LoginView: View {
             
             // MARK: - Google login button
             Button(action: { authViewModel.googleLogIn { userID in
+                userManager.saveToken()
                 userManager.user.id = userID
                 appStateViewModel.setLoginPlatform(.google)
                 userManager.fetchUserInfo(userID: userManager.user.id) { exists in
@@ -34,7 +35,6 @@ struct LoginView: View {
                     } else {
                         appStateViewModel.state = .createProfile
                     }
-                    
                 }
             } }) {
                 HStack(spacing: -40) {
@@ -56,6 +56,7 @@ struct LoginView: View {
             
             // MARK: - Kakao login button
             Button ( action: { authViewModel.kakaoLogin { userID in
+                userManager.saveToken()
                 userManager.user.id = userID
                 appStateViewModel.setLoginPlatform(.kakao)
                 userManager.fetchUserInfo(userID: userManager.user.id) { exists in
@@ -73,6 +74,7 @@ struct LoginView: View {
             
             // MARK: - Naver login button
             Button (action: { authViewModel.naverLogin { userID in
+                userManager.saveToken()
                 userManager.user.id = userID
                 appStateViewModel.setLoginPlatform(.naver)
                 userManager.fetchUserInfo(userID: userManager.user.id) { exists in

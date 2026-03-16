@@ -48,6 +48,8 @@ class AppDelegate: NSObject, UIApplicationDelegate, UNUserNotificationCenterDele
       )
       // TODO: If necessary send token to application server.
       // Note: This callback is fired at each app startup and whenever a new token is generated.
+        print("토큰 저장됨")
+        UserDefaults.standard.set(fcmToken, forKey: "fcmToken")
     }
     
     func userNotificationCenter(_ center: UNUserNotificationCenter, willPresent notification: UNNotification, withCompletionHandler completionHandler: @escaping (UNNotificationPresentationOptions) -> Void) {

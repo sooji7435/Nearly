@@ -15,10 +15,9 @@ class UserManager: ObservableObject {
     
     func addUser(userName username: String) {
         print("add user called")
-        guard let location = user.userLocation else {
-            print("location is nil")
-            return
-        }
+        guard let location = user.userLocation,
+              let token = user.fcmToken else { print("token is nil")
+                  return }
         
         let locationDict: [String: Any] = [
             "latitude": location.lat,
@@ -26,7 +25,7 @@ class UserManager: ObservableObject {
             "address": location.address
         ]
         
-        self.ref.child("users").child(user.id).setValue(["userid": user.id, "username": username, "userlocation": locationDict])
+        self.ref.child("users").child(user.id).setValue(["userid": user.id, "username": username, "userlocation": locationDict, "fcmToken": token])
         
         print("add user success")
     }
@@ -46,8 +45,9 @@ class UserManager: ObservableObject {
                             address: locationData["address"] as? String ?? ""
                         )
                     }
+                    let token = value["fcmToken"] as? String ?? ""
                     
-                    self.user = User(id: userID, userName: username, userLocation: location)
+                    self.user = User(id: userID, userName: username, userLocation: location, fcmToken: token)
                 }
                 completion(true)  // 유저 존재
                 print("fetch success")
@@ -55,6 +55,14 @@ class UserManager: ObservableObject {
                 completion(false) // 유저 없음
             }
         }
+    }
+    
+    // 로그인 성공한 직후 호출
+    func saveToken() {
+        let token = UserDefaults.standard.string(forKey: "fcmToken")
+        print("UserDefaults에서 꺼낸 토큰: \(token ?? "nil")")
+        guard let token = token else { return }
+        self.user.fcmToken = token
     }
     
 }
