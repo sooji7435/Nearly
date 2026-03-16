@@ -17,7 +17,7 @@ struct RecruitDetailView: View {
     @State private var cameraPosition: MapCameraPosition = .automatic
     @State private var showDeleteAlert = false
     
-    var recruit: Recruit
+    @Binding var recruit: Recruit
     
     var body: some View {
         ScrollView {
@@ -154,10 +154,13 @@ struct RecruitDetailView: View {
             print(recruitManager.recruit.route)
 
         }
+        .onChange(of: recruit.participants ) {
+            
+        }
     }
 }
 
-
+/*
 #Preview {
     RecruitDetailView(recruit: Recruit(postId: "123", authorId: "123", title: "한강에서 런닝하실 분~", contents: "안녕하세요 한강에서 런닝하실 분 구합니다.", time: 1710154582, meetingLocation: CLLocationCoordinate2D(latitude: 37.5665, longitude: 126.9780), route: [
         CLLocationCoordinate2D(latitude: 37.5665, longitude: 126.9780),
@@ -171,5 +174,6 @@ struct RecruitDetailView: View {
     .environmentObject(RecruitManager())
     .environmentObject(UserManager())
 }
+ */
  
  

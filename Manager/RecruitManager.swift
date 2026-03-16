@@ -81,7 +81,8 @@ class RecruitManager: ObservableObject {
                 let content = value["content"] as? String ?? ""
                 let time = value["time"] as? Double ?? 0
                 let meetingLocation = value["meetingLocation"] as? CLLocationCoordinate2D ?? CLLocationCoordinate2D(latitude: 0, longitude: 0)
-                let participants = value["participants"] as? [String] ?? []
+                let participantsDict = value["participants"] as? [String: Any] ?? [:]
+                let participants = Array(participantsDict.keys)
                 
                 // route 파싱
                 var route: [CLLocationCoordinate2D] = []

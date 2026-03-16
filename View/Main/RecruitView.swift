@@ -36,8 +36,8 @@ struct RecruitView: View {
                 // List
                 ScrollView {
                     LazyVStack {
-                        ForEach(recruitManager.recruits) { recruit in
-                            RecruitListView(recruit: recruit)
+                        ForEach($recruitManager.recruits) { $recruit in
+                            RecruitListView(recruit: $recruit)
                         }
                     }
                 }
