@@ -1,5 +1,5 @@
 //
-//  SwiftUIView.swift
+//  LoginView.swift
 //  Nearly
 //
 //  Created by 박윤수 on 1/3/26.
@@ -25,25 +25,27 @@ struct LoginView: View {
             Spacer()
             
             // MARK: - Google login button
-            Button(action: { authViewModel.googleLogIn { userID in
-                UserDefaults.standard.set(userID, forKey: "userId")
-                userManager.saveToken()
-                userManager.user.id = userID
-                appStateViewModel.setLoginPlatform(.google)
-                userManager.fetchUserInfo(userID: userManager.user.id) { exists in
-                    if exists {
-                        appStateViewModel.state = .main
-                    } else {
-                        appStateViewModel.state = .createProfile
+            Button(action: {
+                authViewModel.googleLogIn { userID in
+                    UserDefaults.standard.set(userID, forKey: "userId")
+                    userManager.saveToken()
+                    userManager.user.id = userID
+                    appStateViewModel.setLoginPlatform(.google)
+                    userManager.fetchUserInfo(userID: userID) { exists in
+                        if exists {
+                            userManager.updateFcmToken()
+                            appStateViewModel.state = .main
+                        } else {
+                            appStateViewModel.state = .createProfile
+                        }
                     }
                 }
-            } }) {
+            }) {
                 HStack(spacing: -40) {
                     Image("google_login")
                         .resizable()
                         .frame(width: 20, height: 20)
                         .padding()
-                    
                     Text("Sign in with Google")
                         .frame(width: 307, height: 50)
                         .foregroundStyle(Color.black)
@@ -56,38 +58,44 @@ struct LoginView: View {
             }
             
             // MARK: - Kakao login button
-            Button ( action: { authViewModel.kakaoLogin { userID in
-                UserDefaults.standard.set(userID, forKey: "userId")
-                userManager.saveToken()
-                userManager.user.id = userID
-                appStateViewModel.setLoginPlatform(.kakao)
-                userManager.fetchUserInfo(userID: userManager.user.id) { exists in
-                    if exists {
-                        appStateViewModel.state = .main
-                    } else {
-                        appStateViewModel.state = .createProfile
+            Button(action: {
+                authViewModel.kakaoLogin { userID in
+                    UserDefaults.standard.set(userID, forKey: "userId")
+                    userManager.saveToken()
+                    userManager.user.id = userID
+                    appStateViewModel.setLoginPlatform(.kakao)
+                    userManager.fetchUserInfo(userID: userID) { exists in
+                        if exists {
+                            userManager.updateFcmToken()
+                            appStateViewModel.state = .main
+                        } else {
+                            appStateViewModel.state = .createProfile
+                        }
                     }
                 }
-            } }) {
+            }) {
                 Image("kakao_login")
                     .resizable()
                     .frame(width: 320, height: 50)
             }
             
             // MARK: - Naver login button
-            Button (action: { authViewModel.naverLogin { userID in
-                UserDefaults.standard.set(userID, forKey: "userId")
-                userManager.saveToken()
-                userManager.user.id = userID
-                appStateViewModel.setLoginPlatform(.naver)
-                userManager.fetchUserInfo(userID: userManager.user.id) { exists in
-                    if exists {
-                        appStateViewModel.state = .main
-                    } else {
-                        appStateViewModel.state = .createProfile
+            Button(action: {
+                authViewModel.naverLogin { userID in
+                    UserDefaults.standard.set(userID, forKey: "userId")
+                    userManager.saveToken()
+                    userManager.user.id = userID
+                    appStateViewModel.setLoginPlatform(.naver)
+                    userManager.fetchUserInfo(userID: userID) { exists in
+                        if exists {
+                            userManager.updateFcmToken()
+                            appStateViewModel.state = .main
+                        } else {
+                            appStateViewModel.state = .createProfile
+                        }
                     }
                 }
-            } }) {
+            }) {
                 Image("naver_login")
                     .resizable()
                     .frame(width: 320, height: 50)

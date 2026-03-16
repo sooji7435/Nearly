@@ -26,7 +26,6 @@ class UserManager: ObservableObject {
         ]
         
         self.ref.child("users").child(user.id).setValue(["userid": user.id, "username": username, "userlocation": locationDict, "fcmToken": token])
-        
         print("add user success")
     }
     
@@ -34,7 +33,6 @@ class UserManager: ObservableObject {
         print("user fetch start")
         ref.child("users").child(userID).observeSingleEvent(of: .value) { snapshot in
             if snapshot.exists() {
-                // 유저 존재하면 정보 업데이트
                 if let value = snapshot.value as? [String: AnyObject] {
                     let username = value["username"] as? String ?? ""
                     var location = UserLocation(lat: 0, lng: 0, address: "")
@@ -47,19 +45,22 @@ class UserManager: ObservableObject {
                         )
                     }
                     let token = value["fcmToken"] as? String ?? ""
-                    
                     self.user = User(id: userID, userName: username, userLocation: location, fcmToken: token)
                 }
-                completion(true)  // 유저 존재
-                print("user fetch success")
-                print(self.user.id)
+                completion(true)
+                print("user fetch success: \(userID)")
             } else {
-                completion(false) // 유저 없음
+                completion(false)
             }
         }
     }
     
-    // 로그인 성공한 직후 호출
+    // userId UserDefaults에 저장
+    func saveUserId(_ userId: String) {
+        UserDefaults.standard.set(userId, forKey: "userId")
+    }
+    
+    // FCM 토큰 저장
     func saveToken() {
         let token = UserDefaults.standard.string(forKey: "fcmToken")
         print("UserDefaults에서 꺼낸 토큰: \(token ?? "nil")")
@@ -67,4 +68,9 @@ class UserManager: ObservableObject {
         self.user.fcmToken = token
     }
     
+    // 기존 유저 FCM 토큰 DB 업데이트
+    func updateFcmToken() {
+        guard let token = user.fcmToken else { return }
+        ref.child("users").child(user.id).child("fcmToken").setValue(token)
+    }
 }

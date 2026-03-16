@@ -36,16 +36,15 @@ class AppStateViewModel: ObservableObject {
     }
     
     func getLoginPlatform() -> LoginPlatform? {
-        
         guard let value = UserDefaults.standard.string(forKey: "loginPlatform") else {
             return nil
         }
-        
         return LoginPlatform(rawValue: value)
     }
     
     func logout() {
         UserDefaults.standard.removeObject(forKey: "loginPlatform")
+        UserDefaults.standard.removeObject(forKey: "userId")  // ✅ 추가
         state = .login
     }
 }

@@ -11,12 +11,11 @@ import FirebaseDatabase
 import CoreLocation
 
 class RecruitManager: ObservableObject {
-    @Published var recruit: Recruit = Recruit(postId: "", authorId: "", title: "", contents: "", time: 0, meetingLocation: CLLocationCoordinate2D(latitude: 0, longitude: 0), route: [] )
+    @Published var recruit: Recruit = Recruit(postId: "", authorId: "", title: "", contents: "", time: 0, meetingLocation: CLLocationCoordinate2D(latitude: 0, longitude: 0), route: [])
     @Published var recruits: [Recruit] = []
     let ref: DatabaseReference! = Database.database().reference()
     
     func addRecruit(authorId: String, title: String, content: String, time: Date) {
-        
         print("call addRecruit")
         
         let postId = UUID().uuidString
@@ -33,30 +32,22 @@ class RecruitManager: ObservableObject {
              "meetingLocation": [
                 "lat": self.recruit.meetingLocation.latitude,
                 "lon": self.recruit.meetingLocation.longitude
-            ],
+             ],
              "route": routeData,
-             "participants": []
+             "participants": [:]  // ✅ 딕셔너리로 초기화
             ])
         
         print("add recruit success")
     }
     
     func deleteRecruit(postId: String) {
-        
-        // Firebase 삭제
         ref.child("recruits").child(postId).removeValue { error, _ in
-            
             if let error = error {
                 print("삭제 실패:", error)
                 return
             }
-            
             print("모집 삭제 성공")
-            
-            // 로컬 recruits 배열에서도 제거
             self.recruits.removeAll { $0.postId == postId }
-            
-            // 현재 선택된 recruit 초기화 (필요하면)
             if self.recruit.postId == postId {
                 self.recruit = Recruit(postId: "", authorId: "", title: "", contents: "", time: 0, meetingLocation: CLLocationCoordinate2D(), route: [], participants: [])
             }
@@ -67,11 +58,9 @@ class RecruitManager: ObservableObject {
         print("fetch start")
         
         ref.child("recruits").observeSingleEvent(of: .value) { snapshot in
-            
             var temp: [Recruit] = []
             
             for child in snapshot.children {
-                
                 guard let snap = child as? DataSnapshot,
                       let value = snap.value as? [String: Any] else { continue }
                 
@@ -81,23 +70,21 @@ class RecruitManager: ObservableObject {
                 let content = value["content"] as? String ?? ""
                 let time = value["time"] as? Double ?? 0
                 let meetingLocation = value["meetingLocation"] as? CLLocationCoordinate2D ?? CLLocationCoordinate2D(latitude: 0, longitude: 0)
+                
+                // participants 딕셔너리로 파싱
                 let participantsDict = value["participants"] as? [String: Any] ?? [:]
                 let participants = Array(participantsDict.keys)
                 
                 // route 파싱
                 var route: [CLLocationCoordinate2D] = []
-                
                 if let routeArray = value["route"] as? [[String: Any]] {
                     route = routeArray.compactMap { dict in
-                        
                         guard let lat = dict["lat"] as? Double,
                               let lon = dict["lon"] as? Double else { return nil }
-                        
                         return CLLocationCoordinate2D(latitude: lat, longitude: lon)
                     }
                 }
                 
-                // 🔹 Recruit 생성
                 let recruit = Recruit(
                     postId: postId,
                     authorId: authorId,
@@ -108,7 +95,6 @@ class RecruitManager: ObservableObject {
                     route: route,
                     participants: participants
                 )
-                
                 temp.append(recruit)
             }
             
@@ -142,11 +128,8 @@ extension RecruitManager {
             self.recruits[index].participants = updatedParticipants
         }
         
-        // 선택된 recruit가 현재 view에 바인딩되어 있다면 업데이트
         if self.recruit.postId == recruit.postId {
             self.recruit.participants = updatedParticipants
         }
     }
-    
 }
-

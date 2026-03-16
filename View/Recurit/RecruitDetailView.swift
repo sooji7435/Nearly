@@ -31,7 +31,6 @@ struct RecruitDetailView: View {
                     HStack {
                         Image(systemName: "clock")
                             .foregroundStyle(.secondary)
-                        
                         Text(recruit.timeString)
                             .foregroundStyle(.secondary)
                     }
@@ -42,7 +41,6 @@ struct RecruitDetailView: View {
                 VStack(alignment: .leading, spacing: 12) {
                     Text("모집 설명")
                         .font(.headline)
-                    
                     Text(recruit.contents)
                         .foregroundStyle(.secondary)
                 }
@@ -52,7 +50,6 @@ struct RecruitDetailView: View {
                 
                 // 지도 카드
                 VStack(alignment: .leading, spacing: 12) {
-                    
                     Text("러닝 코스")
                         .font(.headline)
                     
@@ -60,20 +57,14 @@ struct RecruitDetailView: View {
                         Annotation("meeting point", coordinate: recruit.meetingLocation) {
                             Text("📍")
                         }
-                        
-                        MapPolyline(
-                            coordinates: recruit.route
-                        )
-                        .stroke(Color.CardColor, lineWidth: 5)
+                        MapPolyline(coordinates: recruit.route)
+                            .stroke(Color.CardColor, lineWidth: 5)
                         
                         if let start = recruit.route.first {
-                            Marker("Start", coordinate: start)
-                                .tint(.green)
+                            Marker("Start", coordinate: start).tint(.green)
                         }
-                        
                         if let end = recruit.route.last {
-                            Marker("End", coordinate: end)
-                                .tint(.red)
+                            Marker("End", coordinate: end).tint(.red)
                         }
                     }
                     .frame(height: 280)
@@ -82,7 +73,6 @@ struct RecruitDetailView: View {
                 
                 // 참여 버튼
                 if recruit.authorId == userManager.user.id {
-                    
                     // 작성자 → 삭제 버튼
                     Button {
                         showDeleteAlert = true
@@ -95,16 +85,13 @@ struct RecruitDetailView: View {
                             .foregroundStyle(.white)
                             .clipShape(RoundedRectangle(cornerRadius: 14))
                     }
-
                 } else {
-                    
                     // 일반 유저 → 참여 버튼
                     Button {
                         recruitManager.toggleParticipation(
                             recruit: recruit,
                             userId: userManager.user.id
                         )
-                        recruitManager.fetchRecruitsList()
                     } label: {
                         Text(
                             recruit.participants.contains(userManager.user.id)
@@ -123,57 +110,28 @@ struct RecruitDetailView: View {
                         .clipShape(RoundedRectangle(cornerRadius: 14))
                     }
                 }
-                
             }
             .padding()
             .alert("모집 삭제", isPresented: $showDeleteAlert) {
-
                 Button("삭제", role: .destructive) {
                     recruitManager.deleteRecruit(postId: recruit.postId)
                     dismiss()
                 }
-
                 Button("취소", role: .cancel) {}
-
             } message: {
                 Text("이 모집글을 삭제하시겠습니까?")
             }
-            
         }
-        
         .navigationBarTitleDisplayMode(.inline)
-        .onAppear() {
+        .onAppear {
             if let first = recruit.route.first {
-                    cameraPosition = .region(
-                        MKCoordinateRegion(
-                            center: first,
-                            span: MKCoordinateSpan(latitudeDelta: 0.01, longitudeDelta: 0.01)
-                        )
+                cameraPosition = .region(
+                    MKCoordinateRegion(
+                        center: first,
+                        span: MKCoordinateSpan(latitudeDelta: 0.01, longitudeDelta: 0.01)
                     )
-                }
-            print(recruitManager.recruit.route)
-
-        }
-        .onChange(of: recruit.participants ) {
-            
+                )
+            }
         }
     }
 }
-
-/*
-#Preview {
-    RecruitDetailView(recruit: Recruit(postId: "123", authorId: "123", title: "한강에서 런닝하실 분~", contents: "안녕하세요 한강에서 런닝하실 분 구합니다.", time: 1710154582, meetingLocation: CLLocationCoordinate2D(latitude: 37.5665, longitude: 126.9780), route: [
-        CLLocationCoordinate2D(latitude: 37.5665, longitude: 126.9780),
-        CLLocationCoordinate2D(latitude: 37.5672, longitude: 126.9795),
-        CLLocationCoordinate2D(latitude: 37.5680, longitude: 126.9810),
-        CLLocationCoordinate2D(latitude: 37.5690, longitude: 126.9825),
-        CLLocationCoordinate2D(latitude: 37.5702, longitude: 126.9840)
-    ], participants: [""]
-    ))
-    
-    .environmentObject(RecruitManager())
-    .environmentObject(UserManager())
-}
- */
- 
- 

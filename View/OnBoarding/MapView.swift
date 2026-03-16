@@ -25,7 +25,7 @@ struct MapView: View {
             // MARK: - Map
             Map(position: $position, interactionModes: [])
             
-                // MARK: - Location Info
+            // MARK: - Location Info
             VStack {
                 VStack {
                     Spacer()
@@ -49,7 +49,9 @@ struct MapView: View {
                     // MARK: - Location Check button
                     Button(action: {
                         locationManager.requestLocationPermission()
-                        locationManager.requestLocation()
+                        locationManager.startUpdatingLocation()
+                        // 주소 변환은 fetchCurrentLocation에서 처리
+                        locationManager.fetchCurrentLocation()
                     }) {
                         Text("내 위치 확인")
                             .font(.headline)
@@ -66,12 +68,11 @@ struct MapView: View {
         .onChange(of: locationManager.userLocation) { _, newLocation in
             guard let newLocation else { return }
             userManager.user.userLocation = newLocation
+            locationManager.stopUpdatingLocation()
             isPresented = false
         }
-        // MARK: - Confirm Location Button
         .toolbar {
             Button(action: {
-                
                 dismiss()
             }) {
                 Text("확인")
@@ -85,5 +86,4 @@ struct MapView: View {
     MapView(isPresented: .constant(true))
         .environmentObject(LocationManager())
         .environmentObject(AppStateViewModel())
-    
 }

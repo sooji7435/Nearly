@@ -1,6 +1,5 @@
-
 //
-//  RunningView.swift
+//  RunningViewModel.swift
 //  Nearly
 //
 //  Created by 박윤수 on 3/13/26.
@@ -20,9 +19,6 @@ class RunningViewModel: ObservableObject {
     
     private var previousLocation: CLLocationCoordinate2D?
     private var timer: Timer?
-    
-    // 외부 위치 업데이트 처리
-    
     
     func startRunning() {
         guard !isRunning else { return }
@@ -62,6 +58,6 @@ class RunningViewModel: ObservableObject {
         }
         
         previousLocation = newCoordinate
+        pathCoordinates.append(newCoordinate)
     }
 }
-

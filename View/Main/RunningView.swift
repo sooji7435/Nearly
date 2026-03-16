@@ -15,13 +15,12 @@ struct RunningView: View {
     
     @State private var position: MapCameraPosition = .userLocation(
         followsHeading: true, fallback: .automatic)
-    @State private var pathCoordinates: [CLLocationCoordinate2D] = []
     
     var body: some View {
         VStack {
             // 지도
             Map(position: $position, interactionModes: [.zoom]) {
-                MapPolyline(coordinates: pathCoordinates)
+                MapPolyline(coordinates: runningViewModel.pathCoordinates)
                     .stroke(Color.CardColor, lineWidth: 10)
             }
             .frame(height: 500)
@@ -30,9 +29,18 @@ struct RunningView: View {
             
             // 러닝 정보
             HStack(spacing: 30) {
-                VStack { Text("거리"); Text(String(format: "%.2f km", runningViewModel.distance)) }
-                VStack { Text("속도"); Text(String(format: "%.2f km/h", runningViewModel.distance / max(runningViewModel.timeElapsed / 3600, 0.001))) }
-                VStack { Text("시간"); Text(timeString(runningViewModel.timeElapsed)) }
+                VStack {
+                    Text("거리")
+                    Text(String(format: "%.2f km", runningViewModel.distance))
+                }
+                VStack {
+                    Text("속도")
+                    Text(String(format: "%.2f km/h", runningViewModel.distance / max(runningViewModel.timeElapsed / 3600, 0.001)))
+                }
+                VStack {
+                    Text("시간")
+                    Text(timeString(runningViewModel.timeElapsed))
+                }
             }
             .font(.headline)
             .padding()
@@ -40,17 +48,22 @@ struct RunningView: View {
             // 버튼
             HStack(spacing: 20) {
                 Button(runningViewModel.isRunning ? "일시정지" : "시작") {
-                    locationManager.requestLocationPermission()
-                    runningViewModel.isRunning ? runningViewModel.pauseRunning() : runningViewModel.startRunning()
-                    locationManager.startUpdatingLocation()
+                    if !runningViewModel.isRunning {
+                        locationManager.requestLocationPermission()
+                        locationManager.startUpdatingLocation()
+                        runningViewModel.startRunning()
+                    } else {
+                        runningViewModel.pauseRunning()
+                        locationManager.stopUpdatingLocation()
+                    }
                 }
                 .padding()
                 .background(runningViewModel.isRunning ? Color.orange : Color.green)
                 .foregroundColor(.white)
                 .cornerRadius(10)
                 
-                Button("종료") { runningViewModel.stopRunning()
-                    pathCoordinates = []
+                Button("종료") {
+                    runningViewModel.stopRunning()
                     locationManager.stopUpdatingLocation()
                 }
                 .padding()
@@ -75,20 +88,15 @@ struct RunningView: View {
             }
         }
         .navigationTitle("Running")
-        .onChange(of: locationManager.userCoordinate) {_, newLocation in
+        .onChange(of: locationManager.userCoordinate) { _, newLocation in
             guard let location = newLocation else { return }
-            let coord = location.coordinate
-            
-            pathCoordinates.append(coord)
-            print(pathCoordinates)
-            
-            runningViewModel.updateLocation(coord) 
+            runningViewModel.updateLocation(location.coordinate)
         }
     }
 }
 
-
 #Preview {
     RunningView()
         .environmentObject(RunningViewModel())
+        .environmentObject(LocationManager())
 }
