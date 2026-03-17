@@ -25,6 +25,12 @@
 	</array>
 	<key>GIDClientID</key>
 	<string>256669622710-kj730j8ovfqri1urcll636mvg5gojj2n.apps.googleusercontent.com</string>
+	<key>KAKAO_APP_KEY</key>
+	<string>$(KAKAO_APP_KEY)</string>
+	<key>NAVER_CLIENT_ID</key>
+	<string>$(NAVER_CLIENT_ID)</string>
+	<key>NAVER_CLIENT_SECRET</key>
+	<string>$(NAVER_CLIENT_SECRET)</string>
 	<key>UILaunchScreen</key>
 	<dict>
 		<key>UIImageName</key>
