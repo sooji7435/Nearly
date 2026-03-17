@@ -42,13 +42,13 @@ class AuthenticationViewModel: ObservableObject {
     }
     
     private func loadKakaoUserInfo(completion: @escaping (String) -> Void) {
-        UserApi.shared.me { userId, error in
+        UserApi.shared.me { user, error in
             if let error = error {
                 print("Kakao User Info Error:", error.localizedDescription)
                 return
             }
             
-            guard let id = userId else { return }
+            guard let id = user?.id else { return }
                
             DispatchQueue.main.async {
                 self.signState = .signIn
