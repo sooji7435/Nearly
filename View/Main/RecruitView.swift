@@ -22,13 +22,6 @@ struct RecruitView: View {
                     
                     Spacer()
                     
-                    Button {
-                        
-                    } label: {
-                        Image(systemName: "magnifyingglass")
-                            .foregroundStyle(Color.black)
-                            .font(.title3)
-                    }
                 }
                 .padding(.horizontal)
                 .padding(.top, 10)

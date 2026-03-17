@@ -32,7 +32,7 @@ class AppStateViewModel: ObservableObject {
     }
     
     func setLoginPlatform(_ platform: LoginPlatform) {
-        UserDefaults.standard.set(platform.rawValue, forKey: "loginPlatform")
+        KeychainHelper.save(platform.rawValue, forKey: KeychainHelper.Key.loginPlatform)
     }
     
     func getLoginPlatform() -> LoginPlatform? {
@@ -44,7 +44,8 @@ class AppStateViewModel: ObservableObject {
     
     func logout() {
         UserDefaults.standard.removeObject(forKey: "loginPlatform")
-        UserDefaults.standard.removeObject(forKey: "userId")  // ✅ 추가
+        KeychainHelper.delete(forKey: KeychainHelper.Key.userId)
+        KeychainHelper.delete(forKey: KeychainHelper.Key.fcmToken)
         state = .login
     }
 }

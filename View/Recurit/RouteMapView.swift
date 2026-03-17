@@ -40,15 +40,20 @@ struct RouteMapView: View {
                     DragGesture(minimumDistance: 0)
                         .onChanged { value in
                             guard isDrawingMode else { return }
-                            // DragGesture.Value → CGPoint
                             let screenPoint = value.location
-                            
-                            // CGPoint → 지도 좌표
                             if let newCoord = reader.convert(screenPoint, from: .local) {
-                                routeCoordinates.append(newCoord)
+                                // 마지막 좌표와 일정 거리 이상일 때만 추가
+                                if let last = routeCoordinates.last {
+                                    let lastLoc = CLLocation(latitude: last.latitude, longitude: last.longitude)
+                                    let newLoc = CLLocation(latitude: newCoord.latitude, longitude: newCoord.longitude)
+                                    if lastLoc.distance(from: newLoc) > 10 { // 10m 이상
+                                        routeCoordinates.append(newCoord)
+                                    }
+                                } else {
+                                    routeCoordinates.append(newCoord)
+                                }
                             }
-                        }
-                )
+                        }                )
             }
             
             VStack {

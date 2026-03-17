@@ -28,8 +28,8 @@ class RunningViewModel: ObservableObject {
         previousLocation = nil
         pathCoordinates.removeAll()
         
-        timer = Timer.scheduledTimer(withTimeInterval: 1, repeats: true) { _ in
-            self.timeElapsed += 1
+        timer = Timer.scheduledTimer(withTimeInterval: 1, repeats: true) { [weak self] _ in
+            self?.timeElapsed += 1
         }
     }
     

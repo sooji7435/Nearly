@@ -39,8 +39,7 @@ struct RunningView: View {
                 }
                 VStack {
                     Text("시간")
-                    Text(timeString(runningViewModel.timeElapsed))
-                }
+                    Text(runningViewModel.timeElapsed.timeString)                 }
             }
             .font(.headline)
             .padding()
@@ -78,8 +77,7 @@ struct RunningView: View {
                 HStack {
                     VStack(alignment: .leading) {
                         Text(run.date, style: .date)
-                        Text("거리: \(String(format: "%.2f", run.distance)) km, 시간: \(timeString(run.time))")
-                            .font(.subheadline)
+                        Text(String(format: "%.2f km/h", runningViewModel.distance / max(runningViewModel.timeElapsed / 3600, 0.001)))                    .font(.subheadline)
                             .foregroundColor(.gray)
                     }
                     Spacer()

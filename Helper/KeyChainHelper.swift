@@ -48,7 +48,8 @@ struct KeychainHelper {
 
 extension KeychainHelper {
     enum Key {
-        static let fcmToken = "fcmToken"
-        static let userId   = "userId"
+        static let fcmToken      = "fcmToken"
+        static let userId        = "userId"
+        static let loginPlatform = "loginPlatform" // ✅ 추가
     }
 }

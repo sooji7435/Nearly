@@ -18,18 +18,23 @@ enum SignState {
 
 class AuthenticationViewModel: ObservableObject {
     @Published var signState: SignState = .signOut
-    @Published var currentUser: User?
     
     // MARK: - Kakao Login
     func kakaoLogin(completion: @escaping (String) -> Void) {
         if UserApi.isKakaoTalkLoginAvailable() {
             UserApi.shared.loginWithKakaoTalk { _, error in
-                if let error = error { return }
+                if let error = error {
+                    print(error)
+                    return
+                }
                 self.loadKakaoUserInfo(completion: completion)
             }
         } else {
             UserApi.shared.loginWithKakaoAccount { _, error in
-                if let error = error { return }
+                if let error = error {
+                    print(error)
+                    return
+                }
                 self.loadKakaoUserInfo(completion: completion)
             }
         }
@@ -37,7 +42,10 @@ class AuthenticationViewModel: ObservableObject {
     
     private func loadKakaoUserInfo(completion: @escaping (String) -> Void) {
         UserApi.shared.me { user, error in
-            if let error = error { return }
+            if let error = error {
+                print(error)
+                return
+            }
             
             guard let id = user?.id else { return }
                
@@ -55,7 +63,10 @@ class AuthenticationViewModel: ObservableObject {
               let rootVC = windowScene.windows.first?.rootViewController else { return }
 
         GIDSignIn.sharedInstance.signIn(withPresenting: rootVC) { result, error in
-            if let error = error { return }
+            if let error = error {
+                print(error)
+                return
+            }
             
             guard let userID = result?.user.userID else { return }
             
@@ -66,10 +77,6 @@ class AuthenticationViewModel: ObservableObject {
         }
     }
 
-    func signOut() {
-        GIDSignIn.sharedInstance.signOut()
-    }
-    
     // MARK: - Naver Login
     func naverLogin(completion: @escaping (String) -> Void) {
         NidOAuth.shared.requestLogin{ result in
@@ -77,8 +84,7 @@ class AuthenticationViewModel: ObservableObject {
                 
             case .success(let loginResult):
                 self.fetchUserId(accessToken: loginResult.accessToken.tokenString, completion: completion)
-                
-                
+    
             case .failure(let error):
             }
         }
@@ -104,4 +110,15 @@ class AuthenticationViewModel: ObservableObject {
         }.resume()
     }
     
+    func signOut(platform: LoginPlatform) {
+        switch platform {
+        case .google:
+            GIDSignIn.sharedInstance.signOut()
+        case .kakao:
+            UserApi.shared.logout { _ in }
+        case .naver:
+            NidOAuth.shared.logout()
+        }
+        signState = .signOut
+    }
 }

@@ -55,7 +55,7 @@ struct ProfileView: View {
             }) {
                 Text("완료")
             }
-            .disabled(isPresented || userName.isEmpty)
+            .disabled(isPresented || userName.trimmingCharacters(in: .whitespaces).isEmpty)
         }
     }
 }
