@@ -48,3 +48,4 @@ class AppStateViewModel: ObservableObject {
         state = .login
     }
 }
+

@@ -14,10 +14,8 @@ class UserManager: ObservableObject {
     let ref: DatabaseReference! = Database.database().reference()
     
     func addUser(userName username: String) {
-        print("add user called")
         guard let location = user.userLocation,
-              let token = user.fcmToken else { print("token is nil")
-                  return }
+              let token = user.fcmToken else { return }
         
         let locationDict: [String: Any] = [
             "latitude": location.lat,
@@ -26,11 +24,9 @@ class UserManager: ObservableObject {
         ]
         
         self.ref.child("users").child(user.id).setValue(["userid": user.id, "username": username, "userlocation": locationDict, "fcmToken": token])
-        print("add user success")
     }
     
     func fetchUserInfo(userID: String, completion: @escaping (Bool) -> Void) {
-        print("user fetch start")
         ref.child("users").child(userID).observeSingleEvent(of: .value) { snapshot in
             if snapshot.exists() {
                 if let value = snapshot.value as? [String: AnyObject] {
@@ -48,7 +44,6 @@ class UserManager: ObservableObject {
                     self.user = User(id: userID, userName: username, userLocation: location, fcmToken: token)
                 }
                 completion(true)
-                print("user fetch success: \(userID)")
             } else {
                 completion(false)
             }
@@ -63,7 +58,6 @@ class UserManager: ObservableObject {
     // FCM 토큰 저장
     func saveToken() {
         let token = UserDefaults.standard.string(forKey: "fcmToken")
-        print("UserDefaults에서 꺼낸 토큰: \(token ?? "nil")")
         guard let token = token else { return }
         self.user.fcmToken = token
     }

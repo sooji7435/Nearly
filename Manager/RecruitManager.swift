@@ -16,8 +16,6 @@ class RecruitManager: ObservableObject {
     let ref: DatabaseReference! = Database.database().reference()
     
     func addRecruit(authorId: String, title: String, content: String, time: Date) {
-        print("call addRecruit")
-        
         let postId = UUID().uuidString
         let routeData = self.recruit.route.map { coordinate in
             ["lat": coordinate.latitude,
@@ -36,17 +34,13 @@ class RecruitManager: ObservableObject {
              "route": routeData,
              "participants": [:]  // ✅ 딕셔너리로 초기화
             ])
-        
-        print("add recruit success")
-    }
+        }
     
     func deleteRecruit(postId: String) {
         ref.child("recruits").child(postId).removeValue { error, _ in
             if let error = error {
-                print("삭제 실패:", error)
                 return
             }
-            print("모집 삭제 성공")
             self.recruits.removeAll { $0.postId == postId }
             if self.recruit.postId == postId {
                 self.recruit = Recruit(postId: "", authorId: "", title: "", contents: "", time: 0, meetingLocation: CLLocationCoordinate2D(), route: [], participants: [])
@@ -55,7 +49,6 @@ class RecruitManager: ObservableObject {
     }
     
     func fetchRecruitsList() {
-        print("fetch start")
         
         ref.child("recruits").observeSingleEvent(of: .value) { snapshot in
             var temp: [Recruit] = []
@@ -100,7 +93,6 @@ class RecruitManager: ObservableObject {
             
             DispatchQueue.main.async {
                 self.recruits = temp
-                print("recruits updated:", temp.count)
             }
         }
     }
@@ -110,7 +102,6 @@ class RecruitManager: ObservableObject {
 extension RecruitManager {
     
     func toggleParticipation(recruit: Recruit, userId: String) {
-        print("userId: \(userId)")
         var updatedParticipants = recruit.participants
         
         if let index = updatedParticipants.firstIndex(of: userId) {

@@ -39,7 +39,6 @@ class LocationManager: NSObject, ObservableObject, CLLocationManagerDelegate {
     }
     
     func locationManager(_ manager: CLLocationManager, didFailWithError error: Error) {
-        print("위치 오류:", error)
     }
     
     // 주소 변환이 필요할 때만 호출 (프로필 설정 등)

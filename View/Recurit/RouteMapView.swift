@@ -46,7 +46,6 @@ struct RouteMapView: View {
                             // CGPoint → 지도 좌표
                             if let newCoord = reader.convert(screenPoint, from: .local) {
                                 routeCoordinates.append(newCoord)
-                                print(newCoord)
                             }
                         }
                 )

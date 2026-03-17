@@ -27,8 +27,8 @@ class AppDelegate: NSObject, UIApplicationDelegate, UNUserNotificationCenterDele
         
         NidOAuth.shared.initialize(
             appName: "Nearly",
-            clientId: secret("NAVER_CLIENT_ID"),
-            clientSecret: secret("NAVER_CLIENT_SECRET"),
+            clientId: SecretHelper.value(for: SecretHelper.Key.naverClientId),
+            clientSecret: SecretHelper.value(for: SecretHelper.Key.naverClientSecret),
             urlScheme: "Nearly"
         )
         return true
@@ -38,7 +38,7 @@ class AppDelegate: NSObject, UIApplicationDelegate, UNUserNotificationCenterDele
     func messaging(_ messaging: Messaging, didReceiveRegistrationToken fcmToken: String?) {
         guard let token = fcmToken else { return }
         print("FCM 토큰 저장됨: \(token)")
-        KeychainHelper.save(token, forKey: "fcmToken")
+        KeychainHelper.save(token, forKey: KeychainHelper.Key.fcmToken)
     }
     
     // 앱 포그라운드 상태에서도 알림 표시
@@ -71,7 +71,7 @@ struct Nearly: App {
     @StateObject var runningViewModel: RunningViewModel = RunningViewModel()
     
     init() {
-        KakaoSDK.initSDK(appKey: secret("KAKAO_APP_KEY"))
+        KakaoSDK.initSDK(appKey: SecretHelper.value(for: SecretHelper.Key.kakaoAppKey))
     }
     
     var body: some Scene {
@@ -89,7 +89,7 @@ struct Nearly: App {
                     appStateViewModel.checkLogin()
                     
                     // 자동 로그인 시 유저 정보 복원
-                    if let userId = KeychainHelper.load(forKey: "userId") {
+                    if let userId = KeychainHelper.load(forKey: KeychainHelper.Key.userId) {
                         userManager.user.id = userId
                         userManager.fetchUserInfo(userID: userId) { _ in }
                     }

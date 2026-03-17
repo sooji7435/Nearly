@@ -45,3 +45,10 @@ struct KeychainHelper {
         SecItemDelete(query as CFDictionary)
     }
 }
+
+extension KeychainHelper {
+    enum Key {
+        static let fcmToken = "fcmToken"
+        static let userId   = "userId"
+    }
+}

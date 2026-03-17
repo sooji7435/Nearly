@@ -34,7 +34,6 @@ struct MeetMapView: View {
                        if let pinLocation = reader.convert(screenCoord, from: .local) {
                            meetingPoint = pinLocation
                            recruitManager.recruit.meetingLocation = pinLocation
-                           print(pinLocation)
                        }
                    })
         }

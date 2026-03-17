@@ -24,18 +24,12 @@ class AuthenticationViewModel: ObservableObject {
     func kakaoLogin(completion: @escaping (String) -> Void) {
         if UserApi.isKakaoTalkLoginAvailable() {
             UserApi.shared.loginWithKakaoTalk { _, error in
-                if let error = error {
-                    print("KakaoTalk Login Error:", error.localizedDescription)
-                    return
-                }
+                if let error = error { return }
                 self.loadKakaoUserInfo(completion: completion)
             }
         } else {
             UserApi.shared.loginWithKakaoAccount { _, error in
-                if let error = error {
-                    print("Kakao Account Login Error:", error.localizedDescription)
-                    return
-                }
+                if let error = error { return }
                 self.loadKakaoUserInfo(completion: completion)
             }
         }
@@ -43,10 +37,7 @@ class AuthenticationViewModel: ObservableObject {
     
     private func loadKakaoUserInfo(completion: @escaping (String) -> Void) {
         UserApi.shared.me { user, error in
-            if let error = error {
-                print("Kakao User Info Error:", error.localizedDescription)
-                return
-            }
+            if let error = error { return }
             
             guard let id = user?.id else { return }
                
@@ -59,21 +50,16 @@ class AuthenticationViewModel: ObservableObject {
 
     // MARK: - Google Login
     func googleLogIn(completion: @escaping (String) -> Void) {
-        print("Google login Called")
         // rootViewController 가져오기
         guard let windowScene = UIApplication.shared.connectedScenes.first as? UIWindowScene,
               let rootVC = windowScene.windows.first?.rootViewController else { return }
 
         GIDSignIn.sharedInstance.signIn(withPresenting: rootVC) { result, error in
-            if let error = error {
-                print("Sign-in error: \(error)")
-                return
-            }
+            if let error = error { return }
             
             guard let userID = result?.user.userID else { return }
             
             DispatchQueue.main.async {
-                print("login success")
                 self.signState = .signIn
                 completion("google_\(userID)")
             }
@@ -90,12 +76,10 @@ class AuthenticationViewModel: ObservableObject {
             switch result {
                 
             case .success(let loginResult):
-                print("Access Token: ", loginResult.accessToken.tokenString)
                 self.fetchUserId(accessToken: loginResult.accessToken.tokenString, completion: completion)
                 
                 
             case .failure(let error):
-                print("Error: ", error.localizedDescription)
             }
         }
     }
