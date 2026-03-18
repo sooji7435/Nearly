@@ -86,6 +86,7 @@ class AuthenticationViewModel: ObservableObject {
                 self.fetchUserId(accessToken: loginResult.accessToken.tokenString, completion: completion)
     
             case .failure(let error):
+                print(error)
             }
         }
     }

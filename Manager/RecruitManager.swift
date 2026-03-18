@@ -39,6 +39,7 @@ class RecruitManager: ObservableObject {
     func deleteRecruit(postId: String) {
         ref.child("recruits").child(postId).removeValue { error, _ in
             if let error = error {
+                print(error)
                 return
             }
             self.recruits.removeAll { $0.postId == postId }
