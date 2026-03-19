@@ -41,13 +41,15 @@ Nearly는 위치 기반으로 러닝 메이트를 모집하고, 코스를 직접
 - `UserDefaults`를 활용한 로그인 플랫폼 상태 유지
 - 신규 유저 / 기존 유저 분기 처리
 
-<img width="1206" height="2622" alt="Simulator Screenshot - iPhone 17 Pro - 2026-03-19 at 15 02 52" src="https://github.com/user-attachments/assets/c60c1b43-33aa-40b6-92fd-459e98c7a4fc" width: "200" height: "200" />
+<p>
+<img width="1206" height="2622" alt="Simulator Screenshot - iPhone 17 Pro - 2026-03-19 at 15 02 52" src="https://github.com/user-attachments/assets/c60c1b43-33aa-40b6-92fd-459e98c7a4fc" width: "200" />
 
-<img width="1206" height="2622" alt="Simulator Screenshot - iPhone 17 Pro - 2026-03-19 at 15 05 39" src="https://github.com/user-attachments/assets/21729528-8768-4732-88d3-46b8716c782a" />
+<img width="1206" height="2622" alt="Simulator Screenshot - iPhone 17 Pro - 2026-03-19 at 15 05 39" src="https://github.com/user-attachments/assets/21729528-8768-4732-88d3-46b8716c782a" width: "200" />
 
-<img width="1206" height="2622" alt="Simulator Screenshot - iPhone 17 Pro - 2026-03-19 at 15 08 27" src="https://github.com/user-attachments/assets/110298d6-71f6-4f2f-9768-1f023fd70514" />
+<img width="1206" height="2622" alt="Simulator Screenshot - iPhone 17 Pro - 2026-03-19 at 15 08 27" src="https://github.com/user-attachments/assets/110298d6-71f6-4f2f-9768-1f023fd70514" width: "200" />
 
-<img width="1206" height="2622" alt="Simulator Screenshot - iPhone 17 Pro - 2026-03-19 at 15 05 43" src="https://github.com/user-attachments/assets/22f9216e-fa2b-467d-ae1b-552c3d026f5e" />
+<img width="1206" height="2622" alt="Simulator Screenshot - iPhone 17 Pro - 2026-03-19 at 15 05 43" src="https://github.com/user-attachments/assets/22f9216e-fa2b-467d-ae1b-552c3d026f5e" width: "200" />
+</p>
 
 2. 러닝 모집글
 - 모집글 작성 / 조회 / 삭제
