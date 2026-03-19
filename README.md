@@ -34,7 +34,7 @@ Nearly는 위치 기반으로 러닝 메이트를 모집하고, 코스를 직접
 
 <주요 기능>
 
-<img width="1206" height="2622" alt="Simulator Screenshot - iPhone 17 Pro - 2026-03-15 at 14 59 36" src="https://github.com/user-attachments/assets/41f9d698-8a8d-439a-9054-d37cdf0ad145" />
+<img width="300" alt="Simulator Screenshot - iPhone 17 Pro - 2026-03-15 at 14 59 36" src="https://github.com/user-attachments/assets/41f9d698-8a8d-439a-9054-d37cdf0ad145" />
 
 1. 소셜 로그인
 - Google, 카카오, 네이버 3가지 소셜 로그인 지원
