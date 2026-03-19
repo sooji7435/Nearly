@@ -42,13 +42,13 @@ Nearly는 위치 기반으로 러닝 메이트를 모집하고, 코스를 직접
 - 신규 유저 / 기존 유저 분기 처리
 
 <p>
-<img width="1206" height="2622" alt="Simulator Screenshot - iPhone 17 Pro - 2026-03-19 at 15 02 52" src="https://github.com/user-attachments/assets/c60c1b43-33aa-40b6-92fd-459e98c7a4fc" width: "200" />
+<img width="200" alt="Simulator Screenshot - iPhone 17 Pro - 2026-03-19 at 15 02 52" src="https://github.com/user-attachments/assets/c60c1b43-33aa-40b6-92fd-459e98c7a4fc" />
 
-<img width="1206" height="2622" alt="Simulator Screenshot - iPhone 17 Pro - 2026-03-19 at 15 05 39" src="https://github.com/user-attachments/assets/21729528-8768-4732-88d3-46b8716c782a" width: "200" />
+<img width="200" alt="Simulator Screenshot - iPhone 17 Pro - 2026-03-19 at 15 05 39" src="https://github.com/user-attachments/assets/21729528-8768-4732-88d3-46b8716c782a" />
 
-<img width="1206" height="2622" alt="Simulator Screenshot - iPhone 17 Pro - 2026-03-19 at 15 08 27" src="https://github.com/user-attachments/assets/110298d6-71f6-4f2f-9768-1f023fd70514" width: "200" />
+<img width="200" alt="Simulator Screenshot - iPhone 17 Pro - 2026-03-19 at 15 08 27" src="https://github.com/user-attachments/assets/110298d6-71f6-4f2f-9768-1f023fd70514" />
 
-<img width="1206" height="2622" alt="Simulator Screenshot - iPhone 17 Pro - 2026-03-19 at 15 05 43" src="https://github.com/user-attachments/assets/22f9216e-fa2b-467d-ae1b-552c3d026f5e" width: "200" />
+<img width="200" alt="Simulator Screenshot - iPhone 17 Pro - 2026-03-19 at 15 05 43" src="https://github.com/user-attachments/assets/22f9216e-fa2b-467d-ae1b-552c3d026f5e" />
 </p>
 
 2. 러닝 모집글
@@ -56,25 +56,29 @@ Nearly는 위치 기반으로 러닝 메이트를 모집하고, 코스를 직접
 - Firebase Realtime Database 기반 실시간 데이터 관리
 - 모집글 참여 / 참여 취소 토글
 
+  <img width="200" alt="Simulator Screenshot - iPhone 17 Pro Max - 2026-03-19 at 15 08 21" src="https://github.com/user-attachments/assets/8b14a2f5-6622-4c91-b1f9-3231f5462843" />
+
 3. 푸시알림(FCM + CloudFunctions)
 - 누군가 내 모집글에 참여하면 작성자에게 실시간 푸시 알림 발송
 - Firebase Cloud Functions로 DB 변경 감지 후 자동화
 - APNs 연동 및 FCM 토큰 관리
+
+<p>
+<img width="200" alt="Simulator Screenshot - iPhone 17 Pro - 2026-03-19 at 15 03 06" src="https://github.com/user-attachments/assets/27864813-b6ee-4b95-b764-a5977786f6e3" />
+
+<img width="200" alt="Simulator Screenshot - iPhone 17 Pro - 2026-03-19 at 15 03 23" src="https://github.com/user-attachments/assets/3f488ade-1841-4ec7-8650-14f9392c26b1" />
+</p>
 
 4. 지도 기반 코스 설정
 - 모집 위치 설정: 지도를 탭하여 집결 위치 핀 설정
 - 코스 드로잉: 드래그 제스처로 러닝 경로를 직접 지도에 그리기
 - `MapPolyline`을 활용한 경로 시각화
 
+<img width="200" alt="Simulator Screenshot - iPhone 17 Pro Max - 2026-03-17 at 15 02 49" src="https://github.com/user-attachments/assets/ae2e2f7a-07bd-492a-98c0-ea10de25d5ef" />
+
 5. 러닝 트래킹
 - 실시간 GPS 경로 추적 및 지도 표시
 - 거리 / 시간 / 속도 실시간 측정
-- 러닝 기록 히스토리 저장
-
-6. 위치 기반 서비스
-- `CoreLocation`을 통한 현재 위치 획득
-- `MKReverseGeocodingRequest`로 좌표 → 주소 변환 (역지오코딩)
-
 
 
 <아키텍처>
