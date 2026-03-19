@@ -41,7 +41,7 @@ Nearly는 위치 기반으로 러닝 메이트를 모집하고, 코스를 직접
 - `UserDefaults`를 활용한 로그인 플랫폼 상태 유지
 - 신규 유저 / 기존 유저 분기 처리
 
-<img width="1206" height="2622" alt="Simulator Screenshot - iPhone 17 Pro - 2026-03-19 at 15 02 52" src="https://github.com/user-attachments/assets/c60c1b43-33aa-40b6-92fd-459e98c7a4fc" />
+<img width="1206" height="2622" alt="Simulator Screenshot - iPhone 17 Pro - 2026-03-19 at 15 02 52" src="https://github.com/user-attachments/assets/c60c1b43-33aa-40b6-92fd-459e98c7a4fc" width: "200" height: "200" />
 
 <img width="1206" height="2622" alt="Simulator Screenshot - iPhone 17 Pro - 2026-03-19 at 15 05 39" src="https://github.com/user-attachments/assets/21729528-8768-4732-88d3-46b8716c782a" />
 
