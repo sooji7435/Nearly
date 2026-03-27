@@ -42,7 +42,7 @@
 /* End PBXFileReference section */
 
 /* Begin PBXFileSystemSynchronizedBuildFileExceptionSet section */
-		F89BAEC72F76C9260035AA82 /* Exceptions for "Nearly" folder in "Nearly" target */ = {
+		F8A364EB2F76E5F700A54C30 /* Exceptions for "Nearly" folder in "Nearly" target */ = {
 			isa = PBXFileSystemSynchronizedBuildFileExceptionSet;
 			membershipExceptions = (
 				Info.plist,
@@ -55,7 +55,7 @@
 		F82D20132EF3F02D00606B93 /* Nearly */ = {
 			isa = PBXFileSystemSynchronizedRootGroup;
 			exceptions = (
-				F89BAEC72F76C9260035AA82 /* Exceptions for "Nearly" folder in "Nearly" target */,
+				F8A364EB2F76E5F700A54C30 /* Exceptions for "Nearly" folder in "Nearly" target */,
 			);
 			path = Nearly;
 			sourceTree = "<group>";
