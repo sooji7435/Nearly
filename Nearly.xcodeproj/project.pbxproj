@@ -62,15 +62,11 @@
 		};
 		F82D20212EF3F02F00606B93 /* NearlyTests */ = {
 			isa = PBXFileSystemSynchronizedRootGroup;
-			exceptions = (
-			);
 			path = NearlyTests;
 			sourceTree = "<group>";
 		};
 		F82D202B2EF3F02F00606B93 /* NearlyUITests */ = {
 			isa = PBXFileSystemSynchronizedRootGroup;
-			exceptions = (
-			);
 			path = NearlyUITests;
 			sourceTree = "<group>";
 		};
