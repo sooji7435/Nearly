@@ -45,9 +45,9 @@
 		F8AE6A3A2F8399700027E940 /* UserLocation.swift in Sources */ = {isa = PBXBuildFile; fileRef = F8AE69FC2F8399700027E940 /* UserLocation.swift */; };
 		F8AE6A3B2F8399700027E940 /* GoogleService-Info.plist in Resources */ = {isa = PBXBuildFile; fileRef = F8AE6A182F8399700027E940 /* GoogleService-Info.plist */; };
 		F8AE6A3D2F8399700027E940 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = F8AE6A172F8399700027E940 /* Assets.xcassets */; };
-		F8AE6A452F83997F0027E940 /* NearlyTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = F8AE6A402F83997F0027E940 /* NearlyTests.swift */; };
-		F8AE6A462F83997F0027E940 /* NearlyUITests.swift in Sources */ = {isa = PBXBuildFile; fileRef = F8AE6A422F83997F0027E940 /* NearlyUITests.swift */; };
-		F8AE6A472F83997F0027E940 /* NearlyUITestsLaunchTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = F8AE6A432F83997F0027E940 /* NearlyUITestsLaunchTests.swift */; };
+		F8AE6B242F839B0C0027E940 /* NearlyTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = F8AE6A402F83997F0027E940 /* NearlyTests.swift */; };
+		F8AE6B252F839B270027E940 /* NearlyUITests.swift in Sources */ = {isa = PBXBuildFile; fileRef = F8AE6A422F83997F0027E940 /* NearlyUITests.swift */; };
+		F8AE6B262F839B270027E940 /* NearlyUITestsLaunchTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = F8AE6A432F83997F0027E940 /* NearlyUITestsLaunchTests.swift */; };
 		F8AF73262F19F60700526D43 /* FirebaseFirestore in Frameworks */ = {isa = PBXBuildFile; productRef = F8AF73252F19F60700526D43 /* FirebaseFirestore */; };
 		F8B2B8E42F0E8D0C002D73F1 /* FirebaseDatabase in Frameworks */ = {isa = PBXBuildFile; productRef = F8B2B8E32F0E8D0C002D73F1 /* FirebaseDatabase */; };
 /* End PBXBuildFile section */
@@ -453,9 +453,6 @@
 				F8AE6A222F8399700027E940 /* LocationManager.swift in Sources */,
 				F8AE6A232F8399700027E940 /* Recruit.swift in Sources */,
 				F8AE6A242F8399700027E940 /* Run.swift in Sources */,
-				F8AE6A452F83997F0027E940 /* NearlyTests.swift in Sources */,
-				F8AE6A462F83997F0027E940 /* NearlyUITests.swift in Sources */,
-				F8AE6A472F83997F0027E940 /* NearlyUITestsLaunchTests.swift in Sources */,
 				F8AE6A252F8399700027E940 /* SecretHelper.swift in Sources */,
 				F8AE6A262F8399700027E940 /* RecruitManager.swift in Sources */,
 				F8AE6A272F8399700027E940 /* RootView.swift in Sources */,
@@ -485,6 +482,7 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				F8AE6B242F839B0C0027E940 /* NearlyTests.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -492,6 +490,8 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				F8AE6B252F839B270027E940 /* NearlyUITests.swift in Sources */,
+				F8AE6B262F839B270027E940 /* NearlyUITestsLaunchTests.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
