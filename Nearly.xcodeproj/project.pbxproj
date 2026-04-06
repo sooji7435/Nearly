@@ -44,10 +44,7 @@
 		F8AE6A392F8399700027E940 /* Coordinate.swift in Sources */ = {isa = PBXBuildFile; fileRef = F8AE69F82F8399700027E940 /* Coordinate.swift */; };
 		F8AE6A3A2F8399700027E940 /* UserLocation.swift in Sources */ = {isa = PBXBuildFile; fileRef = F8AE69FC2F8399700027E940 /* UserLocation.swift */; };
 		F8AE6A3B2F8399700027E940 /* GoogleService-Info.plist in Resources */ = {isa = PBXBuildFile; fileRef = F8AE6A182F8399700027E940 /* GoogleService-Info.plist */; };
-		F8AE6A3C2F8399700027E940 /* .gitignore in Resources */ = {isa = PBXBuildFile; fileRef = F8AE6A162F8399700027E940 /* .gitignore */; };
 		F8AE6A3D2F8399700027E940 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = F8AE6A172F8399700027E940 /* Assets.xcassets */; };
-		F8AE6A3E2F8399700027E940 /* README.md in Resources */ = {isa = PBXBuildFile; fileRef = F8AE6A1C2F8399700027E940 /* README.md */; };
-		F8AE6A3F2F8399700027E940 /* Info.plist in Resources */ = {isa = PBXBuildFile; fileRef = F8AE6A192F8399700027E940 /* Info.plist */; };
 		F8AE6A452F83997F0027E940 /* NearlyTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = F8AE6A402F83997F0027E940 /* NearlyTests.swift */; };
 		F8AE6A462F83997F0027E940 /* NearlyUITests.swift in Sources */ = {isa = PBXBuildFile; fileRef = F8AE6A422F83997F0027E940 /* NearlyUITests.swift */; };
 		F8AE6A472F83997F0027E940 /* NearlyUITestsLaunchTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = F8AE6A432F83997F0027E940 /* NearlyUITestsLaunchTests.swift */; };
@@ -424,10 +421,7 @@
 			buildActionMask = 2147483647;
 			files = (
 				F8AE6A3B2F8399700027E940 /* GoogleService-Info.plist in Resources */,
-				F8AE6A3C2F8399700027E940 /* .gitignore in Resources */,
 				F8AE6A3D2F8399700027E940 /* Assets.xcassets in Resources */,
-				F8AE6A3E2F8399700027E940 /* README.md in Resources */,
-				F8AE6A3F2F8399700027E940 /* Info.plist in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
