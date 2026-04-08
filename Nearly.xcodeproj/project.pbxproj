@@ -41,9 +41,22 @@
 		F82D20282EF3F02F00606B93 /* NearlyUITests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = NearlyUITests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
 /* End PBXFileReference section */
 
+/* Begin PBXFileSystemSynchronizedBuildFileExceptionSet section */
+		F87E103D2F86356600823D32 /* Exceptions for "Nearly" folder in "Nearly" target */ = {
+			isa = PBXFileSystemSynchronizedBuildFileExceptionSet;
+			membershipExceptions = (
+				Info.plist,
+			);
+			target = F82D20102EF3F02D00606B93 /* Nearly */;
+		};
+/* End PBXFileSystemSynchronizedBuildFileExceptionSet section */
+
 /* Begin PBXFileSystemSynchronizedRootGroup section */
 		F87E10122F86343800823D32 /* Nearly */ = {
 			isa = PBXFileSystemSynchronizedRootGroup;
+			exceptions = (
+				F87E103D2F86356600823D32 /* Exceptions for "Nearly" folder in "Nearly" target */,
+			);
 			path = Nearly;
 			sourceTree = "<group>";
 		};
