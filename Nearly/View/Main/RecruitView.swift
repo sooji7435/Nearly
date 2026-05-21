@@ -15,9 +15,8 @@ struct RecruitView: View {
     @State private var isLoading = false
     
     var body: some View {
-        VStack(spacing: 0) {
+        NavigationStack {
             // MARK: - Header
-            // [FIX] 글쓰기 버튼을 헤더 우측으로 이동 → floating 버튼이 리스트 가리는 문제 해결
             HStack {
                 Text("Nearly")
                     .font(.largeTitle)
