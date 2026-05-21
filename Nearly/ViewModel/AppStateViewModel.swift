@@ -32,21 +32,23 @@ class AppStateViewModel: ObservableObject {
     }
     
     func setLoginPlatform(_ platform: LoginPlatform) {
+        // [FIX] 저장과 읽기 모두 Keychain으로 통일
         KeychainHelper.save(platform.rawValue, forKey: KeychainHelper.Key.loginPlatform)
     }
     
     func getLoginPlatform() -> LoginPlatform? {
-        guard let value = UserDefaults.standard.string(forKey: "loginPlatform") else {
+        // [FIX] UserDefaults 대신 Keychain에서 읽도록 수정
+        guard let value = KeychainHelper.load(forKey: KeychainHelper.Key.loginPlatform) else {
             return nil
         }
         return LoginPlatform(rawValue: value)
     }
     
     func logout() {
-        UserDefaults.standard.removeObject(forKey: "loginPlatform")
+        // [FIX] UserDefaults 삭제 → Keychain 삭제로 변경
+        KeychainHelper.delete(forKey: KeychainHelper.Key.loginPlatform)
         KeychainHelper.delete(forKey: KeychainHelper.Key.userId)
         KeychainHelper.delete(forKey: KeychainHelper.Key.fcmToken)
         state = .login
     }
 }
-

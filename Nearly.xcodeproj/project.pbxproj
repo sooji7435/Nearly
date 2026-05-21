@@ -109,9 +109,9 @@
 		F82D20082EF3F02D00606B93 = {
 			isa = PBXGroup;
 			children = (
+				F87E10122F86343800823D32 /* Nearly */,
 				F87E103A2F86345900823D32 /* NearlyUITests */,
 				F87E10362F86344A00823D32 /* NearlyTests */,
-				F87E10122F86343800823D32 /* Nearly */,
 				F82D20122EF3F02D00606B93 /* Products */,
 			);
 			sourceTree = "<group>";

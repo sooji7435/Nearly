@@ -41,6 +41,14 @@ class RunningViewModel: ObservableObject {
     func stopRunning() {
         isRunning = false
         timer?.invalidate()
+        
+        // [FIX] 초기화 전에 현재 기록을 runningHistory에 저장
+        // 거리가 0보다 클 때만 저장 (실수 종료 방지)
+        if distance > 0 {
+            let run = Run(date: Date(), distance: distance, time: timeElapsed)
+            runningHistory.append(run)
+        }
+        
         previousLocation = nil
         distance = 0
         timeElapsed = 0

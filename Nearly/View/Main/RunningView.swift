@@ -39,7 +39,8 @@ struct RunningView: View {
                 }
                 VStack {
                     Text("시간")
-                    Text(runningViewModel.timeElapsed.timeString)                 }
+                    Text(runningViewModel.timeElapsed.timeString)
+                }
             }
             .font(.headline)
             .padding()
@@ -77,11 +78,14 @@ struct RunningView: View {
                 HStack {
                     VStack(alignment: .leading) {
                         Text(run.date, style: .date)
-                        Text(String(format: "%.2f km/h", runningViewModel.distance / max(runningViewModel.timeElapsed / 3600, 0.001)))                    .font(.subheadline)
+                        // [FIX] 전역 distance/timeElapsed 대신 각 run의 distance 사용
+                        Text(String(format: "%.2f km", run.distance))
+                            .font(.subheadline)
                             .foregroundColor(.gray)
                     }
                     Spacer()
-                    Text("\(String(format: "%.2f", run.pace)) km/h")
+                    // run.pace는 Run 구조체의 연산 프로퍼티 (distance / time(h))
+                    Text(String(format: "%.2f km/h", run.pace))
                 }
             }
         }

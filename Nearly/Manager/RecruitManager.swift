@@ -32,9 +32,9 @@ class RecruitManager: ObservableObject {
                 "lon": self.recruit.meetingLocation.longitude
              ],
              "route": routeData,
-             "participants": [:]  // ✅ 딕셔너리로 초기화
+             "participants": [:]
             ])
-        }
+    }
     
     func deleteRecruit(postId: String) {
         ref.child("recruits").child(postId).removeValue { error, _ in
@@ -50,7 +50,6 @@ class RecruitManager: ObservableObject {
     }
     
     func fetchRecruitsList() {
-        
         ref.child("recruits").observeSingleEvent(of: .value) { snapshot in
             var temp: [Recruit] = []
             
@@ -63,9 +62,17 @@ class RecruitManager: ObservableObject {
                 let title = value["title"] as? String ?? ""
                 let content = value["content"] as? String ?? ""
                 let time = value["time"] as? Double ?? 0
-                let meetingLocation = value["meetingLocation"] as? CLLocationCoordinate2D ?? CLLocationCoordinate2D(latitude: 0, longitude: 0)
                 
-                // participants 딕셔너리로 파싱
+                // [FIX] CLLocationCoordinate2D는 Firebase 딕셔너리로 직접 캐스팅 불가
+                // lat/lon 키로 꺼내서 직접 생성
+                var meetingLocation = CLLocationCoordinate2D(latitude: 0, longitude: 0)
+                if let locationDict = value["meetingLocation"] as? [String: Any],
+                   let lat = locationDict["lat"] as? Double,
+                   let lon = locationDict["lon"] as? Double {
+                    meetingLocation = CLLocationCoordinate2D(latitude: lat, longitude: lon)
+                }
+                
+                // participants 파싱
                 let participantsDict = value["participants"] as? [String: Any] ?? [:]
                 let participants = Array(participantsDict.keys)
                 
@@ -106,16 +113,13 @@ extension RecruitManager {
         var updatedParticipants = recruit.participants
         
         if let index = updatedParticipants.firstIndex(of: userId) {
-            // 참여 취소
             updatedParticipants.remove(at: index)
             self.ref.child("recruits").child(recruit.postId).child("participants").child(userId).removeValue()
         } else {
-            // 참여
             updatedParticipants.append(userId)
             self.ref.child("recruits").child(recruit.postId).child("participants").child(userId).setValue(true)
         }
         
-        // 로컬 배열 업데이트
         if let index = self.recruits.firstIndex(where: { $0.postId == recruit.postId }) {
             self.recruits[index].participants = updatedParticipants
         }
