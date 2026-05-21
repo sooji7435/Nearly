@@ -16,38 +16,38 @@ struct RecruitListView: View {
             RecruitDetailView(recruit: $recruit)
         } label: {
             HStack {
-                VStack(alignment: .leading) {
+                VStack(alignment: .leading, spacing: 4) {
                     Text(recruit.title)
-                        .font(.title2.bold())
-                        .foregroundColor(.black)
+                        .font(.headline)
+                        // [FIX] .black 하드코딩 제거 → 다크모드 대응
+                        .foregroundStyle(.primary)
                         .lineLimit(1)
                     
                     Text(recruit.timeString)
-                        .foregroundColor(.gray)
+                        .foregroundStyle(.secondary)
                         .font(.footnote)
                 }
-                    
-                    Spacer()
-                    
-                    //MARK: - 참여자 수 표시                        
-                        HStack(spacing: 4) {
-                            Image(systemName: "person.fill")
-                                .foregroundColor(.gray)
-                            Text("\(recruit.participants.count)")
-                        }
-                        .foregroundColor(.gray)
-                        .font(Font.system(size: 32))
+                
+                Spacer()
+                
+                // [FIX] font size 32 → 캡슐 뱃지로 교체
+                HStack(spacing: 4) {
+                    Image(systemName: "person.fill")
+                        .font(.caption)
+                    Text("\(recruit.participants.count)")
+                        .font(.caption)
+                        .fontWeight(.medium)
                 }
-            .padding()
+                .foregroundStyle(.secondary)
+                .padding(.horizontal, 10)
+                .padding(.vertical, 5)
+                .background(Color(.systemGray6))
+                .clipShape(Capsule())
+            }
+            .padding(.horizontal)
+            .padding(.vertical, 12)
         }
         Divider()
+            .padding(.leading)
     }
 }
-
-
-/*
-#Preview {
-    RecruitListView(recruit: Recruit(postId: "123", authorId: "123", title: "Test", contents: "This is test content", time: 0, meetingLocation: CLLocationCoordinate2D(latitude: 37.5665, longitude: 126.9780), route: [], participants: [""]))
-}
- */
-

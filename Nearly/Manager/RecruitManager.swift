@@ -49,7 +49,8 @@ class RecruitManager: ObservableObject {
         }
     }
     
-    func fetchRecruitsList() {
+    // [FIX] completion 콜백 추가 → RecruitView 로딩 상태 연동
+    func fetchRecruitsList(completion: (() -> Void)? = nil) {
         ref.child("recruits").observeSingleEvent(of: .value) { snapshot in
             var temp: [Recruit] = []
             
@@ -63,8 +64,7 @@ class RecruitManager: ObservableObject {
                 let content = value["content"] as? String ?? ""
                 let time = value["time"] as? Double ?? 0
                 
-                // [FIX] CLLocationCoordinate2D는 Firebase 딕셔너리로 직접 캐스팅 불가
-                // lat/lon 키로 꺼내서 직접 생성
+                // [FIX] CLLocationCoordinate2D 직접 캐스팅 → 딕셔너리 파싱으로 수정
                 var meetingLocation = CLLocationCoordinate2D(latitude: 0, longitude: 0)
                 if let locationDict = value["meetingLocation"] as? [String: Any],
                    let lat = locationDict["lat"] as? Double,
@@ -72,11 +72,9 @@ class RecruitManager: ObservableObject {
                     meetingLocation = CLLocationCoordinate2D(latitude: lat, longitude: lon)
                 }
                 
-                // participants 파싱
                 let participantsDict = value["participants"] as? [String: Any] ?? [:]
                 let participants = Array(participantsDict.keys)
                 
-                // route 파싱
                 var route: [CLLocationCoordinate2D] = []
                 if let routeArray = value["route"] as? [[String: Any]] {
                     route = routeArray.compactMap { dict in
@@ -101,6 +99,7 @@ class RecruitManager: ObservableObject {
             
             DispatchQueue.main.async {
                 self.recruits = temp
+                completion?()
             }
         }
     }
