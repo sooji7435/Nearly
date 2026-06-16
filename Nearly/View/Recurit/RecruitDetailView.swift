@@ -27,11 +27,19 @@ struct RecruitDetailView: View {
                 VStack(alignment: .leading, spacing: 8) {
                     Text(recruit.title)
                         .font(.title.bold())
-                    
+
                     HStack {
                         Image(systemName: "clock")
                             .foregroundStyle(.secondary)
                         Text(recruit.timeString)
+                            .foregroundStyle(.secondary)
+                    }
+                    .font(.subheadline)
+
+                    HStack {
+                        Image(systemName: "person.2.fill")
+                            .foregroundStyle(.secondary)
+                        Text("참여자 \(recruit.participants.count)명")
                             .foregroundStyle(.secondary)
                     }
                     .font(.subheadline)
@@ -124,14 +132,13 @@ struct RecruitDetailView: View {
         }
         .navigationBarTitleDisplayMode(.inline)
         .onAppear {
-            if let first = recruit.route.first {
-                cameraPosition = .region(
-                    MKCoordinateRegion(
-                        center: first,
-                        span: MKCoordinateSpan(latitudeDelta: 0.01, longitudeDelta: 0.01)
-                    )
+            let center = recruit.route.first ?? recruit.meetingLocation
+            cameraPosition = .region(
+                MKCoordinateRegion(
+                    center: center,
+                    span: MKCoordinateSpan(latitudeDelta: 0.01, longitudeDelta: 0.01)
                 )
-            }
+            )
         }
     }
 }

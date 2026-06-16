@@ -10,45 +10,66 @@ import CoreLocation
 import Combine
 
 class RunningViewModel: ObservableObject {
-    
+
     @Published var distance: Double = 0
     @Published var timeElapsed: TimeInterval = 0
     @Published var isRunning = false
     @Published var runningHistory: [Run] = []
     @Published var pathCoordinates: [CLLocationCoordinate2D] = []
-    
+
     private var previousLocation: CLLocationCoordinate2D?
     private var timer: Timer?
-    
+    private var isPaused = false
+    private let historyKey = "runningHistory"
+
+    init() {
+        if let data = UserDefaults.standard.data(forKey: historyKey),
+           let saved = try? JSONDecoder().decode([Run].self, from: data) {
+            runningHistory = saved
+        }
+    }
+
+    private func saveHistory() {
+        if let data = try? JSONEncoder().encode(runningHistory) {
+            UserDefaults.standard.set(data, forKey: historyKey)
+        }
+    }
+
     func startRunning() {
         guard !isRunning else { return }
         isRunning = true
-        distance = 0
-        timeElapsed = 0
-        previousLocation = nil
-        pathCoordinates.removeAll()
-        
+
+        // 일시정지에서 재개할 때는 기록을 유지, 새 러닝 시작 시에만 초기화
+        if !isPaused {
+            distance = 0
+            timeElapsed = 0
+            previousLocation = nil
+            pathCoordinates.removeAll()
+        }
+        isPaused = false
+
         timer = Timer.scheduledTimer(withTimeInterval: 1, repeats: true) { [weak self] _ in
             self?.timeElapsed += 1
         }
     }
-    
+
     func pauseRunning() {
         isRunning = false
+        isPaused = true
         timer?.invalidate()
     }
-    
+
     func stopRunning() {
         isRunning = false
+        isPaused = false
         timer?.invalidate()
-        
-        // [FIX] 초기화 전에 현재 기록을 runningHistory에 저장
-        // 거리가 0보다 클 때만 저장 (실수 종료 방지)
+
         if distance > 0 {
             let run = Run(date: Date(), distance: distance, time: timeElapsed)
             runningHistory.append(run)
+            saveHistory()
         }
-        
+
         previousLocation = nil
         distance = 0
         timeElapsed = 0

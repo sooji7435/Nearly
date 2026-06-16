@@ -21,7 +21,7 @@ class RecruitManager: ObservableObject {
             ["lat": coordinate.latitude,
              "lon": coordinate.longitude]
         }
-        
+
         self.ref.child("recruits").child(postId).setValue(
             ["authorId": authorId,
              "title": title,
@@ -34,6 +34,22 @@ class RecruitManager: ObservableObject {
              "route": routeData,
              "participants": [:]
             ])
+
+        // Firebase 재패치 없이 로컬 배열에 즉시 반영
+        let newRecruit = Recruit(
+            postId: postId,
+            authorId: authorId,
+            title: title,
+            contents: content,
+            time: time.timeIntervalSince1970,
+            meetingLocation: self.recruit.meetingLocation,
+            route: self.recruit.route,
+            participants: []
+        )
+        DispatchQueue.main.async {
+            self.recruits.append(newRecruit)
+            self.recruits.sort(by: { $0.time < $1.time })
+        }
     }
     
     func deleteRecruit(postId: String) {
@@ -98,7 +114,7 @@ class RecruitManager: ObservableObject {
             }
             
             DispatchQueue.main.async {
-                self.recruits = temp
+                self.recruits = temp.sorted(by: { $0.time < $1.time })
                 completion?()
             }
         }

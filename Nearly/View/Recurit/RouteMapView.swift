@@ -58,31 +58,17 @@ struct RouteMapView: View {
             
             VStack {
                 Spacer()
-                if !isDrawingMode {
-                    Button(action: {isDrawingMode = true}) {
-                        Text("경로 그리기")
-                            .font(.headline)
-                            .foregroundColor(.white)
-                            .frame(width: 180, height: 55)
-                            .background(
-                                RoundedRectangle(cornerRadius: 12)
-                                    .fill(Color.CardColor)
-                            )
-                    }
+                Button(action: { isDrawingMode.toggle() }) {
+                    Text(isDrawingMode ? "경로 그리기 완료" : "경로 그리기")
+                        .font(.headline)
+                        .foregroundColor(.white)
+                        .frame(width: 180, height: 55)
+                        .background(
+                            RoundedRectangle(cornerRadius: 12)
+                                .fill(Color.CardColor)
+                        )
                 }
-                
-                else {
-                    Button(action: {isDrawingMode = false}) {
-                        Text("경로 그리기 완료")
-                            .font(.headline)
-                            .foregroundColor(.white)
-                            .frame(width: 180, height: 55)
-                            .background(
-                                RoundedRectangle(cornerRadius: 12)
-                                    .fill(Color.CardColor)
-                            )
-                    }
-                    
+                if isDrawingMode {
                     Text("드래그하여 경로를 그리세요")
                         .font(.caption)
                         .padding(8)

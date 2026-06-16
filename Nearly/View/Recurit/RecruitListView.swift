@@ -10,27 +10,41 @@ import CoreLocation
 
 struct RecruitListView: View {
     @Binding var recruit: Recruit
-    
+
+    private var isExpired: Bool {
+        Date().timeIntervalSince1970 > recruit.time
+    }
+
     var body: some View {
         NavigationLink {
             RecruitDetailView(recruit: $recruit)
         } label: {
             HStack {
                 VStack(alignment: .leading, spacing: 4) {
-                    Text(recruit.title)
-                        .font(.headline)
-                        // [FIX] .black 하드코딩 제거 → 다크모드 대응
-                        .foregroundStyle(.primary)
-                        .lineLimit(1)
-                    
+                    HStack(spacing: 6) {
+                        Text(recruit.title)
+                            .font(.headline)
+                            .foregroundStyle(isExpired ? .secondary : .primary)
+                            .lineLimit(1)
+
+                        if isExpired {
+                            Text("마감")
+                                .font(.caption2.weight(.semibold))
+                                .foregroundStyle(.white)
+                                .padding(.horizontal, 6)
+                                .padding(.vertical, 2)
+                                .background(Color.secondary)
+                                .clipShape(Capsule())
+                        }
+                    }
+
                     Text(recruit.timeString)
                         .foregroundStyle(.secondary)
                         .font(.footnote)
                 }
-                
+
                 Spacer()
-                
-                // [FIX] font size 32 → 캡슐 뱃지로 교체
+
                 HStack(spacing: 4) {
                     Image(systemName: "person.fill")
                         .font(.caption)
@@ -46,6 +60,7 @@ struct RecruitListView: View {
             }
             .padding(.horizontal)
             .padding(.vertical, 12)
+            .opacity(isExpired ? 0.6 : 1.0)
         }
         Divider()
             .padding(.leading)

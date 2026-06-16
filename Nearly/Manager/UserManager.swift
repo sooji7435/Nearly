@@ -55,9 +55,9 @@ class UserManager: ObservableObject {
         UserDefaults.standard.set(userId, forKey: "userId")
     }
     
-    // FCM 토큰 저장
+    // FCM 토큰 저장 (AppDelegate가 Keychain에 저장한 값을 읽음)
     func saveToken() {
-        guard let token = UserDefaults.standard.string(forKey: "fcmToken") else { return }
+        guard let token = KeychainHelper.load(forKey: KeychainHelper.Key.fcmToken) else { return }
         self.user.fcmToken = token
     }
     

@@ -10,10 +10,12 @@ struct RecruitView: View {
     @EnvironmentObject var userManager: UserManager
     @EnvironmentObject var locationManager: LocationManager
     @EnvironmentObject var recruitManager: RecruitManager
-    
-    // [FIX] 로딩 상태 추가
+    @EnvironmentObject var appStateViewModel: AppStateViewModel
+    @EnvironmentObject var authViewModel: AuthenticationViewModel
+
     @State private var isLoading = false
-    
+    @State private var showLogoutAlert = false
+
     var body: some View {
         NavigationStack {
             // MARK: - Header
@@ -21,9 +23,9 @@ struct RecruitView: View {
                 Text("Nearly")
                     .font(.largeTitle)
                     .fontWeight(.bold)
-                
+
                 Spacer()
-                
+
                 NavigationLink {
                     AddRecruitView()
                 } label: {
@@ -38,6 +40,25 @@ struct RecruitView: View {
                     .padding(.vertical, 8)
                     .background(Color.CardColor.opacity(0.12))
                     .clipShape(Capsule())
+                }
+
+                Button {
+                    showLogoutAlert = true
+                } label: {
+                    Image(systemName: "person.circle")
+                        .font(.title3)
+                        .foregroundStyle(.secondary)
+                }
+                .alert("로그아웃", isPresented: $showLogoutAlert) {
+                    Button("로그아웃", role: .destructive) {
+                        if let platform = appStateViewModel.getLoginPlatform() {
+                            authViewModel.signOut(platform: platform)
+                        }
+                        appStateViewModel.logout()
+                    }
+                    Button("취소", role: .cancel) {}
+                } message: {
+                    Text("로그아웃 하시겠습니까?")
                 }
             }
             .padding(.horizontal)
@@ -73,6 +94,13 @@ struct RecruitView: View {
                     LazyVStack(spacing: 0) {
                         ForEach($recruitManager.recruits) { $recruit in
                             RecruitListView(recruit: $recruit)
+                        }
+                    }
+                }
+                .refreshable {
+                    await withCheckedContinuation { continuation in
+                        recruitManager.fetchRecruitsList {
+                            continuation.resume()
                         }
                     }
                 }

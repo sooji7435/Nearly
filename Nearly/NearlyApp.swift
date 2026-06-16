@@ -91,7 +91,10 @@ struct Nearly: App {
                     // 자동 로그인 시 유저 정보 복원
                     if let userId = KeychainHelper.load(forKey: KeychainHelper.Key.userId) {
                         userManager.user.id = userId
-                        userManager.fetchUserInfo(userID: userId) { _ in }
+                        userManager.saveToken()
+                        userManager.fetchUserInfo(userID: userId) { exists in
+                            if exists { userManager.updateFcmToken() }
+                        }
                     }
                 }
         }
