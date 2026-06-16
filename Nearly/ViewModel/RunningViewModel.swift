@@ -76,6 +76,11 @@ class RunningViewModel: ObservableObject {
         pathCoordinates.removeAll()
     }
     
+    func deleteRun(at offsets: IndexSet) {
+        runningHistory.remove(atOffsets: offsets)
+        saveHistory()
+    }
+
     func updateLocation(_ newCoordinate: CLLocationCoordinate2D) {
         guard isRunning else { return }
         
