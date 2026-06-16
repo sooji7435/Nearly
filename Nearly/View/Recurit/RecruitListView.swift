@@ -38,21 +38,35 @@ struct RecruitListView: View {
                         }
                     }
 
-                    Text(recruit.timeString)
-                        .foregroundStyle(.secondary)
-                        .font(.footnote)
+                    HStack(spacing: 6) {
+                        Text(recruit.timeString)
+                            .foregroundStyle(.secondary)
+                            .font(.footnote)
+
+                        if recruit.routeDistance > 0 {
+                            Text("·")
+                                .foregroundStyle(.secondary)
+                                .font(.footnote)
+                            Text(String(format: "%.1f km", recruit.routeDistance))
+                                .foregroundStyle(.secondary)
+                                .font(.footnote)
+                        }
+                    }
                 }
 
                 Spacer()
 
+                // 참여자 수 (최대 인원 포함)
                 HStack(spacing: 4) {
                     Image(systemName: "person.fill")
                         .font(.caption)
-                    Text("\(recruit.participants.count)")
+                    Text(recruit.maxParticipants > 0
+                         ? "\(recruit.participants.count)/\(recruit.maxParticipants)"
+                         : "\(recruit.participants.count)")
                         .font(.caption)
                         .fontWeight(.medium)
                 }
-                .foregroundStyle(.secondary)
+                .foregroundStyle(recruit.isFull ? Color.orange : .secondary)
                 .padding(.horizontal, 10)
                 .padding(.vertical, 5)
                 .background(Color(.systemGray6))

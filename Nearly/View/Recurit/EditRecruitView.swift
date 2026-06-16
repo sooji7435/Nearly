@@ -1,25 +1,32 @@
 //
-//  AddRecruitView.swift
+//  EditRecruitView.swift
 //  Nearly
 //
-//  Created by 박윤수 on 1/28/26.
+//  Created by 박윤수 on 6/16/26.
 //
 
 import SwiftUI
-import MapKit
 
-struct AddRecruitView: View {
+struct EditRecruitView: View {
     @EnvironmentObject var recruitManager: RecruitManager
-    @EnvironmentObject var userManager: UserManager
 
     @Environment(\.dismiss) var dismiss
 
-    @State var title: String = ""
-    @State var contents: String = ""
-    @State var time: Date = Date().addingTimeInterval(3600)
-    @State var meetingPoint: CLLocationCoordinate2D?
-    @State var maxParticipants: Int = 0
-    @State private var position: MapCameraPosition = .userLocation(fallback: .automatic)
+    @Binding var recruit: Recruit
+
+    @State private var title: String
+    @State private var contents: String
+    @State private var time: Date
+    @State private var maxParticipants: Int
+
+    init(recruit: Binding<Recruit>) {
+        self._recruit = recruit
+        let r = recruit.wrappedValue
+        self._title = State(initialValue: r.title)
+        self._contents = State(initialValue: r.contents)
+        self._time = State(initialValue: Date(timeIntervalSince1970: r.time))
+        self._maxParticipants = State(initialValue: r.maxParticipants)
+    }
 
     var body: some View {
         NavigationStack {
@@ -85,69 +92,36 @@ struct AddRecruitView: View {
                         .padding(12)
                         .background(Color(.systemGray6))
                         .clipShape(RoundedRectangle(cornerRadius: 12))
-                    }
 
-                    // MARK: - Map
-                    VStack(alignment: .leading, spacing: 12) {
-                        Text("러닝 코스")
-                            .font(.headline)
-
-                        NavigationLink {
-                            MeetMapView(meetingPoint: $meetingPoint)
-                        } label: {
-                            Map(position: $position, interactionModes: []) {
-                                if let point = meetingPoint {
-                                    Annotation("", coordinate: point) { Text("📍") }
-                                }
-                                if !recruitManager.recruit.route.isEmpty {
-                                    MapPolyline(coordinates: recruitManager.recruit.route)
-                                        .stroke(Color.CardColor, lineWidth: 4)
-                                }
-                            }
-                            .frame(height: 260)
-                            .clipShape(RoundedRectangle(cornerRadius: 12))
-                        }
-                        .onChange(of: meetingPoint?.latitude) { _, _ in
-                            guard let point = meetingPoint else { return }
-                            position = .region(MKCoordinateRegion(
-                                center: point,
-                                span: MKCoordinateSpan(latitudeDelta: 0.01, longitudeDelta: 0.01)
-                            ))
+                        if maxParticipants > 0 && maxParticipants < recruit.participants.count {
+                            Text("현재 참여자(\(recruit.participants.count)명)보다 작게 설정할 수 없습니다")
+                                .font(.caption)
+                                .foregroundStyle(.red)
                         }
                     }
-
                 }
                 .padding()
             }
-            .navigationTitle("모집 만들기")
+            .navigationTitle("모집 수정")
             .toolbar {
+                ToolbarItem(placement: .topBarLeading) {
+                    Button("취소") { dismiss() }
+                }
                 ToolbarItem(placement: .topBarTrailing) {
-                    Button {
-                        recruitManager.addRecruit(
-                            authorId: userManager.user.id,
+                    Button("저장") {
+                        recruitManager.updateRecruit(
+                            postId: recruit.postId,
                             title: title,
                             content: contents,
                             time: time,
                             maxParticipants: maxParticipants
                         )
                         dismiss()
-                    } label: {
-                        Text("확인")
                     }
-                    .disabled(title.isEmpty || contents.isEmpty || meetingPoint == nil || recruitManager.recruit.route.isEmpty)
+                    .disabled(title.isEmpty || contents.isEmpty
+                              || (maxParticipants > 0 && maxParticipants < recruit.participants.count))
                 }
-            }
-            .onDisappear {
-                recruitManager.recruit = Recruit(
-                    postId: "", authorId: "", title: "", contents: "",
-                    time: 0, meetingLocation: CLLocationCoordinate2D(),
-                    route: [], participants: []
-                )
             }
         }
     }
-}
-
-#Preview {
-    AddRecruitView()
 }

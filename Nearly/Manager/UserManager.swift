@@ -67,4 +67,18 @@ class UserManager: ObservableObject {
         guard let token = user.fcmToken else { return }
         ref.child("users").child(user.id).child("fcmToken").setValue(token)
     }
+
+    func updateUser(userName: String, location: UserLocation) {
+        let locationDict: [String: Any] = [
+            "latitude": location.lat,
+            "longitude": location.lng,
+            "address": location.address
+        ]
+        ref.child("users").child(user.id).updateChildValues([
+            "username": userName,
+            "userlocation": locationDict
+        ])
+        user.userName = userName
+        user.userLocation = location
+    }
 }
