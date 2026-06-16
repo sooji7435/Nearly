@@ -21,6 +21,11 @@ struct AddRecruitView: View {
     @State var maxParticipants: Int = 0
     @State private var position: MapCameraPosition = .userLocation(fallback: .automatic)
 
+    private var isRouteSet: Bool { !recruitManager.recruit.route.isEmpty }
+    private var canSubmit: Bool {
+        !title.isEmpty && !contents.isEmpty && meetingPoint != nil && isRouteSet
+    }
+
     var body: some View {
         NavigationStack {
             ScrollView {
@@ -99,12 +104,12 @@ struct AddRecruitView: View {
                                 if let point = meetingPoint {
                                     Annotation("", coordinate: point) { Text("📍") }
                                 }
-                                if !recruitManager.recruit.route.isEmpty {
+                                if isRouteSet {
                                     MapPolyline(coordinates: recruitManager.recruit.route)
                                         .stroke(Color.CardColor, lineWidth: 4)
                                 }
                             }
-                            .frame(height: 260)
+                            .frame(height: 200)
                             .clipShape(RoundedRectangle(cornerRadius: 12))
                         }
                         .onChange(of: meetingPoint?.latitude) { _, _ in
@@ -116,6 +121,24 @@ struct AddRecruitView: View {
                         }
                     }
 
+                    // MARK: - 작성 진행 체크리스트
+                    if !canSubmit {
+                        VStack(alignment: .leading, spacing: 8) {
+                            Text("작성 현황")
+                                .font(.caption.weight(.semibold))
+                                .foregroundStyle(.secondary)
+
+                            VStack(alignment: .leading, spacing: 6) {
+                                ProgressStep(label: "제목",   done: !title.isEmpty)
+                                ProgressStep(label: "설명",   done: !contents.isEmpty)
+                                ProgressStep(label: "집결지 설정", done: meetingPoint != nil)
+                                ProgressStep(label: "코스 그리기", done: isRouteSet)
+                            }
+                        }
+                        .padding(14)
+                        .background(Color(.systemGray6))
+                        .clipShape(RoundedRectangle(cornerRadius: 12))
+                    }
                 }
                 .padding()
             }
@@ -134,7 +157,7 @@ struct AddRecruitView: View {
                     } label: {
                         Text("확인")
                     }
-                    .disabled(title.isEmpty || contents.isEmpty || meetingPoint == nil || recruitManager.recruit.route.isEmpty)
+                    .disabled(!canSubmit)
                 }
             }
             .onDisappear {
@@ -144,6 +167,23 @@ struct AddRecruitView: View {
                     route: [], participants: []
                 )
             }
+        }
+    }
+}
+
+// MARK: - 체크리스트 행
+private struct ProgressStep: View {
+    let label: String
+    let done: Bool
+
+    var body: some View {
+        HStack(spacing: 8) {
+            Image(systemName: done ? "checkmark.circle.fill" : "circle")
+                .foregroundStyle(done ? .green : Color(.systemGray3))
+                .font(.subheadline)
+            Text(label)
+                .font(.subheadline)
+                .foregroundStyle(done ? .primary : .secondary)
         }
     }
 }

@@ -39,6 +39,10 @@ class LocationManager: NSObject, ObservableObject, CLLocationManagerDelegate {
     }
     
     func locationManager(_ manager: CLLocationManager, didFailWithError error: Error) {
+        let clError = error as? CLError
+        // kCLErrorLocationUnknown은 일시적 오류로 무시 (재시도 자동 발생)
+        if clError?.code == .locationUnknown { return }
+        print("위치 오류: \(error.localizedDescription)")
     }
     
     // 주소 변환이 필요할 때만 호출 (프로필 설정 등)

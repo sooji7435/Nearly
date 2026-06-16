@@ -24,6 +24,23 @@ struct RecruitDetailView: View {
         recruit.participants.contains(userManager.user.id)
     }
 
+    // D-day / 남은 시간 표시
+    private var timeUntilRun: String {
+        let diff = Date(timeIntervalSince1970: recruit.time).timeIntervalSinceNow
+        if diff <= 0 { return "종료됨" }
+        if diff < 3_600 { return "곧 시작 (\(Int(diff / 60))분 후)" }
+        if diff < 86_400 { return "\(Int(diff / 3_600))시간 후" }
+        let days = Int(diff / 86_400)
+        return "D-\(days)"
+    }
+
+    private var dDayColor: Color {
+        let diff = Date(timeIntervalSince1970: recruit.time).timeIntervalSinceNow
+        if diff <= 0 { return .secondary }
+        if diff < 86_400 { return .orange }
+        return Color.CardColor
+    }
+
     var body: some View {
         ScrollView {
             VStack(alignment: .leading, spacing: 24) {
@@ -33,11 +50,20 @@ struct RecruitDetailView: View {
                     Text(recruit.title)
                         .font(.title.bold())
 
+                    // 시간 + D-day
                     HStack {
                         Image(systemName: "clock")
                             .foregroundStyle(.secondary)
                         Text(recruit.timeString)
                             .foregroundStyle(.secondary)
+                        Spacer()
+                        Text(timeUntilRun)
+                            .font(.caption.weight(.semibold))
+                            .foregroundStyle(.white)
+                            .padding(.horizontal, 10)
+                            .padding(.vertical, 4)
+                            .background(dDayColor)
+                            .clipShape(Capsule())
                     }
                     .font(.subheadline)
 
@@ -175,6 +201,14 @@ struct RecruitDetailView: View {
             }
         }
         .navigationBarTitleDisplayMode(.inline)
+        // 참여자 수 실시간 갱신
+        .refreshable {
+            await withCheckedContinuation { continuation in
+                recruitManager.fetchParticipants(postId: recruit.postId) {
+                    continuation.resume()
+                }
+            }
+        }
         .onAppear {
             let center = recruit.route.first ?? recruit.meetingLocation
             cameraPosition = .region(

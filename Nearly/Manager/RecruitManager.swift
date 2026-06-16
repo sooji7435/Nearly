@@ -143,6 +143,23 @@ class RecruitManager: ObservableObject {
     }
 }
 
+// MARK: - Participants
+extension RecruitManager {
+
+    func fetchParticipants(postId: String, completion: @escaping () -> Void) {
+        ref.child("recruits").child(postId).child("participants").observeSingleEvent(of: .value) { snapshot in
+            let dict = snapshot.value as? [String: Any] ?? [:]
+            let participants = Array(dict.keys)
+            DispatchQueue.main.async {
+                if let index = self.recruits.firstIndex(where: { $0.postId == postId }) {
+                    self.recruits[index].participants = participants
+                }
+                completion()
+            }
+        }
+    }
+}
+
 // MARK: - Participate
 extension RecruitManager {
 
